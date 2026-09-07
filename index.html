@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="Dieta G&P">
+<title>DIETA GIANCARLO & PAOLA</title>
+<style>
+*{box-sizing:border-box} body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:#f4f7f4;color:#203027}
+header{background:linear-gradient(135deg,#1d5b42,#2f7b58);color:white;padding:24px 28px}
+header h1{margin:0;font-size:27px;letter-spacing:.04em} header p{margin:7px 0 0;opacity:.85}
+.wrap{max-width:1450px;margin:auto;padding:20px}
+.toolbar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;background:white;border:1px solid #dce7df;border-radius:16px;padding:16px;box-shadow:0 5px 20px #1d5b4210}
+.person{padding:12px;border-radius:12px;background:#f7faf8} .person b{display:block;margin-bottom:8px}
+label{font-size:12px;color:#66776d;font-weight:700} input,select{width:150px;padding:8px;border:1px solid #cbd9d0;border-radius:8px;font-weight:800}
+.actions{display:flex;gap:8px;align-items:end;flex-wrap:wrap;margin-top:10px} button{border:0;border-radius:9px;padding:10px 13px;font-weight:800;cursor:pointer;background:#e7f2eb;color:#1d5b42}
+button.primary{background:#1f6a49;color:white} button:hover{filter:brightness(.97)}
+.note{margin:13px 0;color:#6b776f;font-size:12px;line-height:1.5}
+.week{display:grid;grid-template-columns:repeat(7,minmax(180px,1fr));gap:12px;margin-top:15px;overflow-x:auto;padding-bottom:8px}
+.day{background:white;border:1px solid #dce7df;border-radius:15px;min-width:185px;overflow:hidden;box-shadow:0 4px 14px #1d5b4209}
+.dayhead{padding:12px 13px;background:#eef6f0;border-bottom:1px solid #dce7df} .dayhead strong{font-size:15px} .dayhead span{display:block;font-size:11px;color:#718078;margin-top:3px}
+.meal{padding:12px;border-bottom:1px solid #edf2ee;min-height:190px} .meal:last-child{border:0}
+.meal h3{margin:0 0 8px;font-size:11px;color:#2f7b58;letter-spacing:.08em} .mealname{font-size:14px;font-weight:850;line-height:1.25;min-height:35px}
+.desc{font-size:11px;color:#69776f;line-height:1.4;margin:7px 0} .kcal{display:inline-block;background:#edf7f0;color:#1f6a49;padding:4px 7px;border-radius:7px;font-size:11px;font-weight:850}
+.meal button{float:right;padding:5px 7px;font-size:10px}.recipe-btn{float:none!important;margin-top:8px!important;background:#fff4df!important;color:#8a5a00!important}
+.swapday{float:right;border:1px solid #c9d9ce;background:#fff;color:#27583b;border-radius:8px;padding:5px 8px;font-size:10px;font-weight:800;cursor:pointer}
+.peoplebox{margin-top:9px;padding:8px;background:#f6faf7;border:1px solid #dbe8df;border-radius:9px}
+.mealstyle{margin:8px 0 9px;padding:7px 8px;background:#eef7f0;border:1px solid #d3e4d7;border-radius:9px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.mealstyle b{font-size:10px;color:#28563a;letter-spacing:.03em}
+.mealstyle select{max-width:155px;padding:5px 7px;border-radius:7px;border:1px solid #c8d9cc;background:white;font-size:11px;font-weight:700;color:#28563a}
+
+.peoplebox b{font-size:10px;letter-spacing:.04em}
+.peoplegrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
+.peoplegrid label{font-size:10px;color:#5d6d63}
+.peoplegrid input{width:58px!important;padding:5px 6px!important;margin-left:4px}
+
+.summary{margin-top:14px;background:white;border:1px solid #dce7df;border-radius:15px;padding:15px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat{padding:10px;background:#f7faf8;border-radius:10px} .stat span{display:block;font-size:10px;color:#718078;text-transform:uppercase;font-weight:800} .stat strong{font-size:18px}
+.modal{display:none;position:fixed;inset:0;background:#0007;z-index:10;padding:4vh 15px} .modal.open{display:block} .box{max-width:760px;max-height:92vh;overflow:auto;margin:auto;background:white;border-radius:16px;padding:18px}
+.option{border:1px solid #dce7df;border-radius:11px;padding:11px;margin:8px 0;cursor:pointer} .option:hover{background:#f2f8f4} .option b{display:block} .option small{color:#6b776f}
+footer{text-align:center;padding:18px;color:#7b8780;font-size:11px}
+@media(max-width:850px){.toolbar{grid-template-columns:1fr}.week{grid-template-columns:repeat(7,220px)}.summary{grid-template-columns:1fr 1fr}}
+@media print{header,.actions,.note,.meal button,footer{display:none!important} body{background:white}.wrap{padding:0}.week{grid-template-columns:repeat(7,1fr);gap:4px;overflow:visible}.day{min-width:0;box-shadow:none}.meal{min-height:150px;padding:7px}.desc{font-size:9px}}
+
+@media (min-width:900px){
+  .toolbar{grid-template-columns:minmax(190px,1fr) minmax(190px,1fr) minmax(230px,1.15fr)!important;align-items:start}
+  .toolbar>.person{margin:0!important}
+}
+
+
+#printOnly{display:none}
+@media print{
+  body{background:#fff!important;color:#111!important;font-family:Arial,Helvetica,sans-serif!important}
+  body>*:not(#printOnly){display:none!important}
+  #printOnly{display:block!important}
+  #printOnly h1{font-size:22px;margin:0 0 14px;border-bottom:2px solid #222;padding-bottom:8px}
+  .print-day{page-break-inside:avoid;margin:0 0 18px}
+  .print-day h2{font-size:17px;margin:0 0 8px;padding:6px 8px;background:#f1f1f1;border-left:4px solid #444}
+  .print-meal{margin:0 0 12px;padding:8px 10px;border:1px solid #bbb;border-radius:6px}
+  .print-meal h3{font-size:14px;margin:0 0 5px}
+  .print-meal .dish{font-size:15px;font-weight:700;margin-bottom:5px}
+  .print-meal .label{font-weight:700}
+  .print-meal p{margin:3px 0;font-size:12px;line-height:1.35}
+  .no-print{display:none!important}
+}
+
+
+.toolbar>.person:last-child{position:relative;min-height:92px;padding-right:330px}
+.portion-actions{position:absolute;right:12px;top:50%;transform:translateY(-50%);display:flex;gap:7px;align-items:center;white-space:nowrap}
+.portion-actions button{padding:9px 11px;font-size:11px}
+@media(max-width:1150px){
+ .toolbar>.person:last-child{padding-right:12px}
+ .portion-actions{position:static;transform:none;margin-top:10px;flex-wrap:wrap}
+}
+
+
+/* ===== VERSIONE IPHONE / MOBILE ===== */
+@media (max-width: 768px){
+  html,body{
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden;
+    -webkit-text-size-adjust:100%;
+  }
+
+  body{
+    background:#f4f7f4;
+  }
+
+  header{
+    padding:16px 16px 14px!important;
+  }
+
+  header h1{
+    font-size:22px!important;
+    line-height:1.15!important;
+  }
+
+  header p{
+    font-size:12px!important;
+    line-height:1.35!important;
+  }
+
+  .wrap{
+    width:100%!important;
+    max-width:none!important;
+    padding:10px!important;
+  }
+
+  .toolbar{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:8px!important;
+    padding:10px!important;
+    border-radius:12px!important;
+  }
+
+  .toolbar>.person{
+    width:100%!important;
+    min-height:auto!important;
+    padding:10px!important;
+    padding-right:10px!important;
+  }
+
+  .toolbar>.person:last-child{
+    padding-right:10px!important;
+  }
+
+  .person b{
+    font-size:13px!important;
+    margin-bottom:7px!important;
+  }
+
+  label{
+    font-size:11px!important;
+  }
+
+  input,select{
+    width:100%!important;
+    max-width:none!important;
+    min-height:42px!important;
+    font-size:16px!important; /* evita lo zoom automatico Safari */
+    padding:8px 10px!important;
+  }
+
+  .portion-actions{
+    position:static!important;
+    transform:none!important;
+    display:grid!important;
+    grid-template-columns:1fr 1fr 1fr!important;
+    gap:6px!important;
+    margin-top:10px!important;
+    white-space:normal!important;
+  }
+
+  .portion-actions button{
+    width:100%!important;
+    min-height:42px!important;
+    padding:8px 5px!important;
+    font-size:10px!important;
+    line-height:1.15!important;
+  }
+
+  #gramsControl{
+    margin-top:8px!important;
+  }
+
+  .week{
+    display:block!important;
+    width:100%!important;
+    overflow:visible!important;
+    margin-top:10px!important;
+    padding-bottom:0!important;
+  }
+
+  .day{
+    width:100%!important;
+    min-width:0!important;
+    margin-bottom:12px!important;
+    border-radius:12px!important;
+  }
+
+  .dayhead{
+    padding:10px 11px!important;
+    min-height:58px!important;
+  }
+
+  .dayhead strong{
+    font-size:16px!important;
+  }
+
+  .dayhead span{
+    font-size:11px!important;
+    margin-top:4px!important;
+    padding-right:85px!important;
+  }
+
+  .swapday{
+    float:right!important;
+    min-height:34px!important;
+    padding:6px 9px!important;
+    font-size:10px!important;
+  }
+
+  .meal{
+    padding:11px!important;
+  }
+
+  .meal h3{
+    font-size:12px!important;
+    line-height:1.3!important;
+    min-height:34px!important;
+  }
+
+  .meal h3 button{
+    min-height:34px!important;
+    padding:6px 9px!important;
+    font-size:10px!important;
+  }
+
+  .mealstyle{
+    display:grid!important;
+    grid-template-columns:110px 1fr!important;
+    align-items:center!important;
+    padding:8px!important;
+    gap:8px!important;
+  }
+
+  .mealstyle b{
+    font-size:10px!important;
+  }
+
+  .mealstyle select{
+    width:100%!important;
+    max-width:none!important;
+    min-height:38px!important;
+    font-size:15px!important;
+  }
+
+  .mealname{
+    font-size:16px!important;
+    line-height:1.25!important;
+    margin-top:8px!important;
+  }
+
+  .desc{
+    font-size:12px!important;
+    line-height:1.45!important;
+  }
+
+  .kcal{
+    font-size:11px!important;
+    display:inline-block!important;
+    margin:5px 0!important;
+  }
+
+  .peoplebox{
+    padding:9px!important;
+    margin-top:9px!important;
+  }
+
+  .peoplebox b{
+    font-size:10px!important;
+  }
+
+  .peoplegrid{
+    grid-template-columns:1fr 1fr!important;
+    gap:8px!important;
+  }
+
+  .peoplegrid label{
+    display:flex!important;
+    flex-direction:column!important;
+    gap:4px!important;
+  }
+
+  .peoplegrid input{
+    width:100%!important;
+    min-height:40px!important;
+    margin-left:0!important;
+    font-size:16px!important;
+  }
+
+  .recipe-btn{
+    width:100%!important;
+    min-height:40px!important;
+    margin-top:10px!important;
+  }
+
+  .modal{
+    padding:8px!important;
+    align-items:flex-end!important;
+  }
+
+  .modal .box{
+    width:100%!important;
+    max-width:none!important;
+    max-height:88vh!important;
+    overflow:auto!important;
+    border-radius:16px 16px 0 0!important;
+    padding:14px!important;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .modal h2{
+    font-size:17px!important;
+    padding-right:34px!important;
+  }
+
+  .option{
+    padding:11px!important;
+    margin-bottom:7px!important;
+  }
+
+  .option b{
+    font-size:13px!important;
+  }
+
+  .option small{
+    font-size:11px!important;
+    line-height:1.4!important;
+  }
+
+  button{
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
+  }
+}
+
+/* Ottimizzazione specifica per iPhone più stretti */
+@media (max-width: 430px){
+  .portion-actions{
+    grid-template-columns:1fr!important;
+  }
+
+  .portion-actions button{
+    font-size:11px!important;
+  }
+
+  .mealstyle{
+    grid-template-columns:95px 1fr!important;
+  }
+
+  header h1{
+    font-size:20px!important;
+  }
+}
+
+/* Supporto area sicura iPhone con notch */
+@supports (padding: max(0px)){
+  body{
+    padding-left:env(safe-area-inset-left);
+    padding-right:env(safe-area-inset-right);
+  }
+  header{
+    padding-top:max(16px, env(safe-area-inset-top))!important;
+  }
+}
+
+
+#iosInstallHint{display:none;background:#fff8df;border:1px solid #eadba6;border-radius:10px;
+padding:9px 11px;margin:10px 0;font-size:12px;line-height:1.4;color:#66541d}
+@media (max-width:768px){#iosInstallHint{display:block}}
+@media (display-mode:standalone){#iosInstallHint{display:none!important}}
+
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1d5b42">
+<link rel="apple-touch-icon" href="icon-180.png">
+</head>
+<body>
+<header><h1>DIETA GIANCARLO &amp; PAOLA</h1><p>Pianificatore alimentare per due persone · pranzo e cena · alternative intercambiabili · ottimizzato iPhone</p></header>
+<div class="wrap">
+<div class="toolbar">
+ <div class="person"><b>👨 UOMO · 60 anni · sedentario</b><label>Obiettivo kcal/giorno&nbsp; </label><input id="kcalM" type="number" min="1200" max="3500" step="50" value="1800"></div>
+ <div class="person"><b>👩 DONNA · 60 anni · sedentaria</b><label>Obiettivo kcal/giorno&nbsp; </label><input id="kcalF" type="number" min="1200" max="3500" step="50" value="1600"></div>
+ <div class="person"><b>⚖ DIVISIONE PORZIONI</b>
+  <label>Visualizza&nbsp; </label>
+  <select id="portionMode" onchange="portionModeChanged()">
+   <option value="percent">Percentuale</option>
+   <option value="grams">Grammi</option>
+  </select>
+  <div id="gramsControl" style="display:none;margin-top:8px">
+   <label>Peso totale piatto&nbsp; </label>
+   <input id="totalDishGrams" type="number" min="100" max="3000" step="10" value="500" onchange="render()">
+   <span style="font-size:11px;color:#718078"> g</span>
+  </div>
+  <div class="portion-actions">
+   <button class="primary" onclick="generate()">↻ GENERA SETTIMANA</button>
+   <button onclick="printPlan()">🖨 STAMPA</button>
+   <button onclick="resetPlan()">AZZERA</button>
+  </div>
+ </div>
+</div>
+
+<div id="iosInstallHint">📱 Su iPhone: apri questa pagina in Safari, tocca <b>Condividi</b> → <b>Aggiungi alla schermata Home</b>. Da quel momento si aprirà come una piccola app.</div>
+<div class="week" id="week"></div>
+</div>
+<div class="modal" id="modal"><div class="box"><button style="float:right" onclick="closeModal()">✕</button><h2 id="modalTitle">Scegli alternativa</h2><div id="options"></div></div></div>
+<footer>DIETA GIANCARLO & PAOLA · v1.14 · Pianificatore locale — almeno 20 primi e 20 secondi per ogni stile — ricette incluse</footer>
+<script>
+const DB=[{"style": "Mediterraneo", "name": "Pasta al pomodoro + pollo e verdure", "desc": "80 g pasta al pomodoro, 120 g petto di pollo, verdure grigliate, 10 g olio EVO, frutta", "kcal": 650, "type": "pranzo", "recipe": "Cuoci la pasta al dente. Scalda una salsa semplice di pomodoro con basilico. Griglia il pollo e le verdure, condisci con olio EVO a crudo. Servi con una porzione di frutta.", "course": "primo"}, {"style": "Mediterraneo", "name": "Riso basmati + salmone + zucchine", "desc": "80 g riso, 130 g salmone, zucchine, 5 g olio EVO, frutta", "kcal": 690, "type": "pranzo", "recipe": "Cuoci il riso basmati. Salta le zucchine in padella antiaderente. Cuoci il salmone al forno o alla piastra e completa con olio EVO e limone.", "course": "primo"}, {"style": "Mediterraneo", "name": "Farro mediterraneo + mozzarella", "desc": "80 g farro, pomodorini, 100 g mozzarella light, rucola, 10 g olio EVO, frutta", "kcal": 640, "type": "pranzo", "recipe": "Lessa il farro e lascialo intiepidire. Unisci pomodorini, rucola e mozzarella a cubetti. Condisci con olio EVO, limone o aceto.", "course": "primo"}, {"style": "Mediterraneo", "name": "Cous cous + ceci e verdure", "desc": "80 g cous cous, 130 g ceci cotti, verdure, 10 g olio EVO, yogurt bianco", "kcal": 620, "type": "pranzo", "recipe": "Reidrata il cous cous. Aggiungi ceci scolati e verdure grigliate o saltate. Condisci con olio EVO, limone ed erbe aromatiche.", "course": "primo"}, {"style": "Mediterraneo", "name": "Orata al forno + patate", "desc": "180 g orata, 220 g patate, verdure, 10 g olio EVO, frutta", "kcal": 610, "type": "cena", "recipe": "Inforna l’orata con limone, prezzemolo e poco sale. Cuoci le patate a spicchi al forno. Aggiungi verdure e olio EVO a crudo.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Minestrone + pane + bresaola", "desc": "Minestrone di verdure e legumi, 70 g pane, 70 g bresaola, 10 g olio EVO, frutta", "kcal": 590, "type": "cena", "recipe": "Cuoci un minestrone con verdure miste e una quota di legumi. Servi con pane tostato, bresaola a parte e olio EVO a crudo.", "course": "primo"}, {"style": "Italiano leggero", "name": "Risotto ai funghi + tacchino", "desc": "80 g riso, funghi, 120 g tacchino, 10 g parmigiano, verdura, frutta", "kcal": 650, "type": "pranzo", "recipe": "Tosta il riso senza burro, porta a cottura con brodo leggero e funghi. Manteca con poco parmigiano. Cuoci il tacchino alla piastra.", "course": "primo"}, {"style": "Italiano leggero", "name": "Gnocchi al pomodoro + ricotta", "desc": "200 g gnocchi, pomodoro, 80 g ricotta, verdure, frutta", "kcal": 620, "type": "pranzo", "recipe": "Cuoci gli gnocchi e condiscili con salsa di pomodoro semplice. Aggiungi la ricotta a fiocchi e accompagna con verdure.", "course": "primo"}, {"style": "Italiano leggero", "name": "Pasta e lenticchie", "desc": "70 g pasta, 160 g lenticchie cotte, verdure, 10 g olio EVO, frutta", "kcal": 630, "type": "pranzo", "recipe": "Cuoci le lenticchie con carota, sedano e pomodoro. Aggiungi la pasta e completa la cottura nella zuppa. Olio EVO a crudo.", "course": "primo"}, {"style": "Italiano leggero", "name": "Pollo al limone + patate", "desc": "150 g pollo, 220 g patate, verdure, 10 g olio EVO, frutta", "kcal": 600, "type": "cena", "recipe": "Rosola il pollo in padella antiaderente con succo di limone ed erbe. Cuoci le patate al forno o al vapore e aggiungi verdure.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Frittata + pane + verdure", "desc": "2 uova + 100 g albumi, 60 g pane, verdure, 10 g olio EVO, frutta", "kcal": 570, "type": "cena", "recipe": "Sbatti uova e albumi con erbe aromatiche. Cuoci in padella antiaderente o al forno. Servi con pane integrale e verdure.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Caprese + pane integrale", "desc": "125 g mozzarella, pomodoro, 70 g pane integrale, 5 g olio EVO, verdure, frutta", "kcal": 600, "type": "cena", "recipe": "Affetta pomodoro e mozzarella, aggiungi basilico e olio EVO. Accompagna con pane integrale e un contorno di verdure.", "course": "secondo"}, {"style": "Vegetariano", "name": "Bowl quinoa, ceci e verdure", "desc": "75 g quinoa, 130 g ceci, verdure, 10 g olio EVO, frutta", "kcal": 620, "type": "pranzo", "recipe": "Cuoci la quinoa e lasciala intiepidire. Unisci ceci, verdure crude o grigliate e condisci con olio EVO, limone e spezie.", "course": "primo"}, {"style": "Vegetariano", "name": "Pasta integrale con ricotta e spinaci", "desc": "80 g pasta integrale, 100 g ricotta, spinaci, 5 g olio EVO, frutta", "kcal": 610, "type": "pranzo", "recipe": "Cuoci la pasta. Salta gli spinaci, unisci la ricotta con poca acqua di cottura e amalgama il tutto.", "course": "primo"}, {"style": "Vegetariano", "name": "Cous cous con tofu e verdure", "desc": "80 g cous cous, 140 g tofu, verdure, 10 g olio EVO, frutta", "kcal": 630, "type": "pranzo", "recipe": "Reidrata il cous cous. Rosola il tofu a cubetti in padella antiaderente con spezie. Unisci verdure e olio EVO.", "course": "primo"}, {"style": "Vegetariano", "name": "Zuppa di legumi + crostini", "desc": "250 g zuppa di legumi, 70 g pane, verdure, 10 g olio EVO, yogurt", "kcal": 580, "type": "cena", "recipe": "Cuoci fagioli, ceci o lenticchie con verdure e aromi. Servi con crostini di pane e olio EVO a crudo.", "course": "primo"}, {"style": "Vegetariano", "name": "Burger di legumi + patate", "desc": "2 burger di legumi, 200 g patate, insalata, 10 g olio EVO, frutta", "kcal": 590, "type": "cena", "recipe": "Frulla legumi cotti con spezie e poco pangrattato, forma i burger e cuocili in forno. Servi con patate e insalata.", "course": "secondo"}, {"style": "Vegetariano", "name": "Uova strapazzate + pane + verdure", "desc": "2 uova + 100 g albumi, 70 g pane, verdure, 5 g olio EVO, frutta", "kcal": 560, "type": "cena", "recipe": "Cuoci uova e albumi in padella antiaderente a fuoco basso. Servi con pane integrale e abbondanti verdure.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Pollo, riso e verdure", "desc": "160 g pollo, 70 g riso, verdure, 10 g olio EVO, frutta", "kcal": 620, "type": "pranzo", "recipe": "Cuoci il riso. Griglia il pollo con erbe e spezie. Aggiungi verdure cotte o crude e olio EVO a crudo.", "course": "primo"}, {"style": "Proteico leggero", "name": "Tacchino + cous cous + verdure", "desc": "160 g tacchino, 70 g cous cous, verdure, 10 g olio EVO, frutta", "kcal": 610, "type": "pranzo", "recipe": "Cuoci il tacchino alla piastra. Reidrata il cous cous, aggiungi verdure e condisci con olio EVO e limone.", "course": "primo"}, {"style": "Proteico leggero", "name": "Tonno, patate e fagiolini", "desc": "140 g tonno al naturale, 220 g patate, fagiolini, 10 g olio EVO, frutta", "kcal": 590, "type": "pranzo", "recipe": "Lessa patate e fagiolini. Aggiungi il tonno sgocciolato e condisci con olio EVO, limone e prezzemolo.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Merluzzo + riso + verdure", "desc": "180 g merluzzo, 70 g riso, verdure, 10 g olio EVO, frutta", "kcal": 590, "type": "cena", "recipe": "Cuoci il merluzzo al vapore, al forno o in padella antiaderente. Servi con riso e verdure, completando con olio EVO.", "course": "primo"}, {"style": "Proteico leggero", "name": "Manzo magro + pane + verdure", "desc": "140 g manzo magro, 70 g pane, verdure, 10 g olio EVO, frutta", "kcal": 610, "type": "cena", "recipe": "Griglia il manzo senza aggiungere grassi in cottura. Servi con pane integrale, verdure e olio EVO a crudo.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Sogliola + cous cous + verdure", "desc": "180 g sogliola, 70 g cous cous, verdure, 10 g olio EVO, frutta", "kcal": 580, "type": "cena", "recipe": "Cuoci la sogliola in padella antiaderente con limone. Prepara il cous cous e abbinalo a verdure cotte o crude.", "course": "primo"}, {"style": "Pesce", "name": "Pasta con tonno e pomodoro", "desc": "80 g pasta integrale, 100 g tonno al naturale, pomodoro, 10 g olio EVO, frutta", "kcal": 610, "type": "pranzo", "recipe": "Cuoci la pasta. Scalda il pomodoro con aromi, aggiungi il tonno sgocciolato fuori dal fuoco e condisci con olio EVO.", "course": "primo"}, {"style": "Pesce", "name": "Orzo con gamberi e verdure", "desc": "80 g orzo, 150 g gamberi, verdure, 10 g olio EVO, frutta", "kcal": 610, "type": "pranzo", "recipe": "Lessa l’orzo. Salta velocemente i gamberi con zucchine o peperoni. Unisci il tutto e completa con olio EVO e limone.", "course": "primo"}, {"style": "Pesce", "name": "Riso con salmone e broccoli", "desc": "75 g riso, 130 g salmone, broccoli, 5 g olio EVO, frutta", "kcal": 650, "type": "pranzo", "recipe": "Cuoci riso e broccoli. Cuoci il salmone alla piastra o al forno e servi insieme con limone e poco olio EVO.", "course": "primo"}, {"style": "Pesce", "name": "Branzino + patate + insalata", "desc": "180 g branzino, 220 g patate, insalata, 10 g olio EVO, frutta", "kcal": 610, "type": "cena", "recipe": "Cuoci il branzino al forno con erbe e limone. Servi con patate lessate o al forno e insalata.", "course": "secondo"}, {"style": "Pesce", "name": "Merluzzo alla mediterranea", "desc": "180 g merluzzo, pomodoro, olive, 60 g pane, verdure, frutta", "kcal": 570, "type": "cena", "recipe": "Cuoci il merluzzo con pomodoro, capperi e poche olive. Servi con pane integrale e verdure.", "course": "secondo"}, {"style": "Pesce", "name": "Salmone al forno + verdure", "desc": "150 g salmone, verdure al forno, 60 g pane, 5 g olio EVO, frutta", "kcal": 620, "type": "cena", "recipe": "Inforna il salmone con limone ed erbe. Cuoci insieme zucchine, peperoni o melanzane e servi con pane.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Spaghetti pomodoro, basilico e ricotta", "desc": "80 g spaghetti, pomodoro, 70 g ricotta, basilico, 5 g olio EVO, frutta", "kcal": 610, "type": "pranzo", "recipe": "Cuoci gli spaghetti al dente. Prepara un sugo leggero di pomodoro e basilico, unisci la ricotta fuori dal fuoco e completa con olio EVO.", "course": "primo"}, {"style": "Mediterraneo", "name": "Pasta con zucchine e parmigiano", "desc": "80 g pasta, 200 g zucchine, 15 g parmigiano, 10 g olio EVO, frutta", "kcal": 590, "type": "pranzo", "recipe": "Salta le zucchine in padella, cuoci la pasta e manteca con poca acqua di cottura e parmigiano. Completa con olio EVO.", "course": "primo"}, {"style": "Mediterraneo", "name": "Riso con piselli e zafferano", "desc": "80 g riso, 130 g piselli, zafferano, 10 g parmigiano, 5 g olio EVO, frutta", "kcal": 600, "type": "pranzo", "recipe": "Cuoci il riso con brodo leggero, aggiungi piselli e zafferano. Manteca con parmigiano e poco olio.", "course": "primo"}, {"style": "Mediterraneo", "name": "Pasta ceci e rosmarino", "desc": "70 g pasta, 160 g ceci cotti, pomodoro, rosmarino, 10 g olio EVO", "kcal": 620, "type": "pranzo", "recipe": "Insaporisci i ceci con pomodoro e rosmarino, aggiungi acqua e cuoci la pasta direttamente nella preparazione. Olio EVO a crudo.", "course": "primo"}, {"style": "Mediterraneo", "name": "Riso integrale con verdure", "desc": "80 g riso integrale, peperoni, zucchine, melanzane, 10 g olio EVO, frutta", "kcal": 580, "type": "pranzo", "recipe": "Cuoci il riso. Griglia o salta le verdure e uniscile al riso con erbe aromatiche e olio EVO.", "course": "primo"}, {"style": "Mediterraneo", "name": "Pollo alla mediterranea", "desc": "150 g pollo, pomodorini, olive, verdure, 60 g pane, 5 g olio EVO", "kcal": 590, "type": "cena", "recipe": "Cuoci il pollo con pomodorini, origano e poche olive. Servi con verdure e pane.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Branzino al limone", "desc": "180 g branzino, verdure, 200 g patate, 10 g olio EVO", "kcal": 600, "type": "cena", "recipe": "Inforna il branzino con limone e prezzemolo. Accompagna con patate e verdure.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Tacchino alle erbe con patate", "desc": "150 g tacchino, 220 g patate, insalata, 10 g olio EVO", "kcal": 590, "type": "cena", "recipe": "Griglia il tacchino con salvia e rosmarino. Servi con patate al forno e insalata.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Frittata di zucchine", "desc": "2 uova + 100 g albumi, zucchine, 70 g pane, 10 g olio EVO, frutta", "kcal": 580, "type": "cena", "recipe": "Salta le zucchine, aggiungi uova e albumi e cuoci la frittata in padella antiaderente o forno. Servi con pane.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Sgombro con patate e insalata", "desc": "150 g sgombro, 200 g patate, insalata, 5 g olio EVO, frutta", "kcal": 620, "type": "cena", "recipe": "Cuoci lo sgombro alla piastra o al forno. Servi con patate lesse, insalata e limone.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Penne al pomodoro e melanzane", "desc": "80 g penne, pomodoro, melanzane, 10 g parmigiano, 5 g olio EVO", "kcal": 590, "type": "pranzo", "recipe": "Griglia le melanzane, prepara il pomodoro, unisci la pasta e completa con parmigiano.", "course": "primo"}, {"style": "Italiano leggero", "name": "Risotto zucchine e parmigiano", "desc": "80 g riso, zucchine, 15 g parmigiano, brodo leggero, frutta", "kcal": 600, "type": "pranzo", "recipe": "Cuoci il risotto con zucchine e brodo leggero. Manteca con parmigiano senza burro.", "course": "primo"}, {"style": "Italiano leggero", "name": "Pasta broccoli e ricotta", "desc": "80 g pasta, broccoli, 80 g ricotta, 5 g olio EVO", "kcal": 600, "type": "pranzo", "recipe": "Lessa i broccoli, cuoci la pasta nella stessa acqua e manteca con ricotta e poca acqua di cottura.", "course": "primo"}, {"style": "Italiano leggero", "name": "Pasta al ragù leggero di tacchino", "desc": "80 g pasta, 100 g macinato di tacchino, pomodoro, verdure", "kcal": 620, "type": "pranzo", "recipe": "Prepara un ragù con tacchino magro, sedano, carota e pomodoro. Cuoci lentamente e condisci la pasta.", "course": "primo"}, {"style": "Italiano leggero", "name": "Riso alla zucca", "desc": "80 g riso, 250 g zucca, 15 g parmigiano, 5 g olio EVO", "kcal": 580, "type": "pranzo", "recipe": "Stufa la zucca, aggiungi il riso e porta a cottura con brodo. Completa con parmigiano.", "course": "primo"}, {"style": "Italiano leggero", "name": "Vitello alla piastra con verdure", "desc": "150 g vitello magro, verdure, 70 g pane, 10 g olio EVO", "kcal": 600, "type": "cena", "recipe": "Cuoci il vitello alla piastra e servi con verdure grigliate, pane e olio EVO.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Polpette di tacchino al forno", "desc": "160 g tacchino macinato, pangrattato, verdure, 200 g patate", "kcal": 610, "type": "cena", "recipe": "Forma polpette con tacchino, aromi e poco pangrattato. Cuoci al forno e servi con patate e verdure.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Coniglio alle erbe", "desc": "160 g coniglio, rosmarino, verdure, 70 g pane, 10 g olio EVO", "kcal": 590, "type": "cena", "recipe": "Cuoci il coniglio in casseruola con erbe aromatiche e poca acqua o brodo. Servi con verdure e pane.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Uova al pomodoro con pane", "desc": "2 uova + 100 g albumi, pomodoro, 70 g pane, verdure", "kcal": 570, "type": "cena", "recipe": "Scalda il pomodoro in padella, aggiungi le uova e cuoci dolcemente. Servi con pane e verdure.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Roast-beef con rucola e patate", "desc": "140 g roast-beef, rucola, 220 g patate, 10 g olio EVO", "kcal": 600, "type": "cena", "recipe": "Servi il roast-beef a fette con rucola, limone, patate lessate o al forno e olio EVO.", "course": "secondo"}, {"style": "Vegetariano", "name": "Pasta con ceci e spinaci", "desc": "75 g pasta, 140 g ceci, spinaci, 5 g olio EVO", "kcal": 610, "type": "pranzo", "recipe": "Cuoci pasta e spinaci, aggiungi i ceci e manteca con poca acqua di cottura e olio EVO.", "course": "primo"}, {"style": "Vegetariano", "name": "Riso con lenticchie e verdure", "desc": "75 g riso, 150 g lenticchie cotte, verdure, 5 g olio EVO", "kcal": 610, "type": "pranzo", "recipe": "Cuoci il riso e uniscilo a lenticchie e verdure saltate. Condisci con spezie e olio.", "course": "primo"}, {"style": "Vegetariano", "name": "Orzo con piselli e feta", "desc": "80 g orzo, 130 g piselli, 60 g feta, verdure", "kcal": 620, "type": "pranzo", "recipe": "Lessa l'orzo, aggiungi piselli, verdure e feta sbriciolata. Condisci con limone.", "course": "primo"}, {"style": "Vegetariano", "name": "Lasagnetta leggera ricotta e verdure", "desc": "Porzione di lasagna con ricotta, zucchine, pomodoro e poco parmigiano", "kcal": 630, "type": "pranzo", "recipe": "Alterna sfoglia, ricotta, zucchine e pomodoro. Completa con poco parmigiano e cuoci al forno.", "course": "primo"}, {"style": "Vegetariano", "name": "Riso basmati con tofu al curry", "desc": "75 g riso, 150 g tofu, verdure, curry, yogurt bianco", "kcal": 620, "type": "pranzo", "recipe": "Cuoci il riso. Rosola tofu e verdure con curry e completa con un cucchiaio di yogurt.", "course": "primo"}, {"style": "Vegetariano", "name": "Frittata spinaci e ricotta", "desc": "2 uova, 80 g ricotta, spinaci, 60 g pane", "kcal": 590, "type": "cena", "recipe": "Mescola uova, ricotta e spinaci cotti. Cuoci in forno o padella antiaderente e servi con pane.", "course": "secondo"}, {"style": "Vegetariano", "name": "Tofu grigliato con patate", "desc": "160 g tofu, 220 g patate, verdure, 10 g olio EVO", "kcal": 590, "type": "cena", "recipe": "Griglia il tofu marinato con limone e spezie. Servi con patate e verdure.", "course": "secondo"}, {"style": "Vegetariano", "name": "Polpette di lenticchie", "desc": "180 g lenticchie cotte, pangrattato, verdure, 70 g pane", "kcal": 580, "type": "cena", "recipe": "Frulla grossolanamente le lenticchie con aromi e poco pangrattato. Forma polpette e cuoci al forno.", "course": "secondo"}, {"style": "Vegetariano", "name": "Mozzarella, pomodoro e verdure grigliate", "desc": "125 g mozzarella, pomodoro, verdure grigliate, 70 g pane", "kcal": 600, "type": "cena", "recipe": "Disponi mozzarella e pomodoro con basilico. Aggiungi verdure grigliate e pane integrale.", "course": "secondo"}, {"style": "Vegetariano", "name": "Omelette ai funghi", "desc": "2 uova + 100 g albumi, funghi, 60 g pane, insalata", "kcal": 560, "type": "cena", "recipe": "Cuoci i funghi, aggiungi uova e albumi sbattuti e prepara l'omelette. Servi con pane e insalata.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Pasta con tonno e zucchine", "desc": "75 g pasta, 110 g tonno al naturale, zucchine, 5 g olio EVO", "kcal": 600, "type": "pranzo", "recipe": "Cuoci la pasta, salta le zucchine e unisci il tonno sgocciolato. Completa con olio EVO.", "course": "primo"}, {"style": "Proteico leggero", "name": "Riso con pollo e verdure", "desc": "70 g riso, 130 g pollo, verdure, 5 g olio EVO", "kcal": 610, "type": "pranzo", "recipe": "Cuoci il riso. Griglia il pollo a dadini, aggiungi verdure e unisci tutto.", "course": "primo"}, {"style": "Proteico leggero", "name": "Farro con tacchino e pomodorini", "desc": "75 g farro, 130 g tacchino, pomodorini, rucola", "kcal": 610, "type": "pranzo", "recipe": "Lessa il farro, cuoci il tacchino alla piastra e unisci pomodorini e rucola.", "course": "primo"}, {"style": "Proteico leggero", "name": "Cous cous con pollo e ceci", "desc": "65 g cous cous, 100 g pollo, 80 g ceci, verdure", "kcal": 620, "type": "pranzo", "recipe": "Reidrata il cous cous, aggiungi pollo grigliato, ceci e verdure.", "course": "primo"}, {"style": "Proteico leggero", "name": "Pasta ricotta e bresaola", "desc": "75 g pasta, 80 g ricotta, 50 g bresaola, rucola", "kcal": 610, "type": "pranzo", "recipe": "Manteca la pasta con ricotta e poca acqua di cottura. Aggiungi bresaola e rucola fuori dal fuoco.", "course": "primo"}, {"style": "Proteico leggero", "name": "Petto di pollo con patate dolci", "desc": "170 g pollo, 220 g patata dolce, verdure", "kcal": 600, "type": "cena", "recipe": "Griglia il pollo e cuoci la patata dolce al forno. Aggiungi verdure.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Tacchino alla piastra con pane", "desc": "170 g tacchino, 70 g pane, verdure, 10 g olio EVO", "kcal": 590, "type": "cena", "recipe": "Griglia il tacchino con spezie e servi con pane, verdure e olio EVO.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Bresaola, grana e insalata", "desc": "90 g bresaola, 25 g grana, 80 g pane, insalata, frutta", "kcal": 580, "type": "cena", "recipe": "Disponi la bresaola con rucola, scaglie di grana e limone. Servi con pane e insalata.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Frittata proteica alle verdure", "desc": "2 uova + 150 g albumi, verdure, 60 g pane", "kcal": 560, "type": "cena", "recipe": "Sbatti uova e albumi, aggiungi verdure cotte e cuoci al forno o in padella antiaderente.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Manzo magro con patate", "desc": "160 g manzo magro, 200 g patate, verdure", "kcal": 610, "type": "cena", "recipe": "Cuoci il manzo alla piastra e servi con patate e verdure.", "course": "secondo"}, {"style": "Pesce", "name": "Spaghetti con vongole leggeri", "desc": "80 g spaghetti, 180 g vongole con guscio, prezzemolo, 10 g olio EVO", "kcal": 610, "type": "pranzo", "recipe": "Apri le vongole in padella, filtra il liquido, unisci gli spaghetti al dente e completa con prezzemolo e olio.", "course": "primo"}, {"style": "Pesce", "name": "Pasta con gamberi e zucchine", "desc": "80 g pasta, 140 g gamberi, zucchine, 5 g olio EVO", "kcal": 600, "type": "pranzo", "recipe": "Salta le zucchine e i gamberi velocemente, unisci la pasta e completa con olio e limone.", "course": "primo"}, {"style": "Pesce", "name": "Riso con tonno e piselli", "desc": "75 g riso, 100 g tonno al naturale, 120 g piselli, 5 g olio EVO", "kcal": 600, "type": "pranzo", "recipe": "Cuoci il riso e i piselli, aggiungi il tonno sgocciolato e condisci con olio EVO.", "course": "primo"}, {"style": "Pesce", "name": "Cous cous con salmone e verdure", "desc": "70 g cous cous, 120 g salmone, verdure", "kcal": 630, "type": "pranzo", "recipe": "Prepara il cous cous, cuoci il salmone a cubetti e aggiungi verdure e limone.", "course": "primo"}, {"style": "Pesce", "name": "Pasta con sgombro e pomodorini", "desc": "75 g pasta, 100 g sgombro, pomodorini, 5 g olio EVO", "kcal": 620, "type": "pranzo", "recipe": "Cuoci la pasta, scalda i pomodorini e aggiungi lo sgombro. Unisci la pasta e completa con prezzemolo.", "course": "primo"}, {"style": "Pesce", "name": "Tonno fresco alla piastra", "desc": "160 g tonno fresco, 200 g patate, verdure, 10 g olio EVO", "kcal": 610, "type": "cena", "recipe": "Scottare il tonno alla piastra lasciandolo morbido. Servi con patate e verdure.", "course": "secondo"}, {"style": "Pesce", "name": "Gamberi alla piastra con riso", "desc": "180 g gamberi, 65 g riso, verdure, 5 g olio EVO", "kcal": 590, "type": "cena", "recipe": "Griglia i gamberi con limone. Servi con riso e verdure.", "course": "secondo"}, {"style": "Pesce", "name": "Trota al forno con patate", "desc": "180 g trota, 220 g patate, verdure", "kcal": 600, "type": "cena", "recipe": "Inforna la trota con limone ed erbe. Servi con patate e verdure.", "course": "secondo"}, {"style": "Pesce", "name": "Calamari alla griglia", "desc": "180 g calamari, 70 g pane, insalata, 10 g olio EVO", "kcal": 580, "type": "cena", "recipe": "Griglia i calamari pochi minuti per lato. Condisci con limone e servi con pane e insalata.", "course": "secondo"}, {"style": "Pesce", "name": "Sarde al forno con verdure", "desc": "170 g sarde, 60 g pane, verdure, 5 g olio EVO", "kcal": 590, "type": "cena", "recipe": "Disponi le sarde in teglia con prezzemolo e poco pangrattato. Cuoci al forno e servi con verdure.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Linguine limone e zucchine", "desc": "80 g linguine, zucchine, limone, 15 g parmigiano, 5 g olio EVO", "kcal": 600, "type": "pranzo", "recipe": "Cuoci le linguine. Salta le zucchine, profuma con scorza di limone e manteca con parmigiano e poca acqua di cottura.", "course": "primo"}, {"style": "Mediterraneo", "name": "Riso alla greca", "desc": "80 g riso, pomodoro, cetriolo, 50 g feta, olive, 5 g olio EVO", "kcal": 600, "type": "pranzo", "recipe": "Cuoci e raffredda il riso, poi unisci pomodoro, cetriolo, feta, poche olive e olio EVO.", "course": "primo"}, {"style": "Mediterraneo", "name": "Pasta con cannellini e salvia", "desc": "70 g pasta, 160 g cannellini, salvia, pomodoro, 10 g olio EVO", "kcal": 600, "type": "pranzo", "recipe": "Insaporisci i cannellini con salvia e pomodoro, aggiungi la pasta cotta e completa con olio EVO.", "course": "primo"}, {"style": "Mediterraneo", "name": "Bulgur con verdure mediterranee", "desc": "80 g bulgur, melanzane, peperoni, zucchine, 10 g olio EVO", "kcal": 600, "type": "pranzo", "recipe": "Cuoci il bulgur e uniscilo alle verdure grigliate. Condisci con olio, limone e prezzemolo.", "course": "primo"}, {"style": "Mediterraneo", "name": "Pasta con peperoni e ricotta", "desc": "80 g pasta, peperoni, 80 g ricotta, 5 g olio EVO", "kcal": 600, "type": "pranzo", "recipe": "Arrostisci i peperoni, frullane una parte con ricotta e usa la crema per condire la pasta.", "course": "primo"}, {"style": "Mediterraneo", "name": "Riso con ceci e spinaci", "desc": "75 g riso, 140 g ceci, spinaci, 5 g olio EVO", "kcal": 600, "type": "pranzo", "recipe": "Cuoci il riso, aggiungi ceci e spinaci saltati e completa con olio e limone.", "course": "primo"}, {"style": "Mediterraneo", "name": "Pasta con pomodorini e feta", "desc": "80 g pasta, pomodorini, 60 g feta, basilico, 5 g olio EVO", "kcal": 600, "type": "pranzo", "recipe": "Cuoci la pasta, unisci pomodorini saltati e feta sbriciolata, quindi basilico fresco.", "course": "primo"}, {"style": "Mediterraneo", "name": "Farro con lenticchie e verdure", "desc": "75 g farro, 140 g lenticchie, carote, sedano, 5 g olio EVO", "kcal": 600, "type": "pranzo", "recipe": "Lessa il farro e uniscilo alle lenticchie e alle verdure. Condisci con olio EVO.", "course": "primo"}, {"style": "Mediterraneo", "name": "Pasta con carciofi e parmigiano", "desc": "80 g pasta, carciofi, 15 g parmigiano, 5 g olio EVO", "kcal": 600, "type": "pranzo", "recipe": "Stufa i carciofi, unisci la pasta e manteca con parmigiano e acqua di cottura.", "course": "primo"}, {"style": "Mediterraneo", "name": "Riso pomodoro e mozzarella", "desc": "75 g riso, pomodoro, 80 g mozzarella, basilico", "kcal": 600, "type": "pranzo", "recipe": "Cuoci il riso, condiscilo con pomodoro e aggiungi mozzarella a cubetti e basilico a fine cottura.", "course": "primo"}, {"style": "Mediterraneo", "name": "Merluzzo con pomodoro e capperi", "desc": "180 g merluzzo, pomodoro, capperi, 70 g pane, verdure", "kcal": 590, "type": "cena", "recipe": "Cuoci il merluzzo nel pomodoro con capperi e origano. Servi con pane e verdure.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Salmone al limone con broccoli", "desc": "150 g salmone, broccoli, 180 g patate, limone", "kcal": 620, "type": "cena", "recipe": "Cuoci il salmone al forno con limone. Servi con broccoli e patate.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Tacchino con peperoni", "desc": "160 g tacchino, peperoni, 70 g pane, 5 g olio EVO", "kcal": 590, "type": "cena", "recipe": "Rosola il tacchino in padella antiaderente, aggiungi peperoni già cotti e servi con pane.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Polpette di pollo al pomodoro", "desc": "160 g pollo macinato, pomodoro, verdure, 60 g pane", "kcal": 590, "type": "cena", "recipe": "Forma piccole polpette, cuocile nel pomodoro e accompagnale con verdure e pane.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Uova alla mediterranea", "desc": "2 uova + 100 g albumi, pomodoro, spinaci, 70 g pane", "kcal": 590, "type": "cena", "recipe": "Cuoci pomodoro e spinaci, aggiungi uova e albumi e termina la cottura con coperchio.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Seppie con piselli", "desc": "180 g seppie, 150 g piselli, pomodoro, 60 g pane", "kcal": 590, "type": "cena", "recipe": "Cuoci le seppie con pomodoro, aggiungi i piselli e lascia stufare finché morbide.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Orata all'acqua pazza", "desc": "180 g orata, pomodorini, prezzemolo, 200 g patate", "kcal": 590, "type": "cena", "recipe": "Cuoci l'orata con pomodorini, prezzemolo e poca acqua. Servi con patate.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Manzo con rucola e pomodorini", "desc": "150 g manzo magro, rucola, pomodorini, 70 g pane", "kcal": 590, "type": "cena", "recipe": "Griglia il manzo e servilo affettato con rucola, pomodorini e pane.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Calamari con verdure grigliate", "desc": "180 g calamari, verdure grigliate, 70 g pane, 5 g olio EVO", "kcal": 590, "type": "cena", "recipe": "Griglia velocemente i calamari e servili con verdure, limone e pane.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Ricotta al forno con verdure", "desc": "180 g ricotta, verdure, 70 g pane, erbe aromatiche", "kcal": 590, "type": "cena", "recipe": "Inforna la ricotta con erbe aromatiche e servi con verdure grigliate e pane.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Pollo con olive e pomodoro", "desc": "160 g pollo, pomodoro, olive, 200 g patate", "kcal": 590, "type": "cena", "recipe": "Cuoci il pollo con pomodoro e poche olive; accompagna con patate.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Trota alle erbe", "desc": "180 g trota, erbe aromatiche, verdure, 200 g patate", "kcal": 590, "type": "cena", "recipe": "Cuoci la trota al forno con erbe e limone e servi con patate e verdure.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Fesa di tacchino con melanzane", "desc": "160 g tacchino, melanzane, 70 g pane, 10 g olio EVO", "kcal": 590, "type": "cena", "recipe": "Griglia tacchino e melanzane, condisci con olio EVO e accompagna con pane.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Mozzarella con pomodori e ceci", "desc": "125 g mozzarella, pomodori, 100 g ceci, insalata", "kcal": 590, "type": "cena", "recipe": "Unisci mozzarella, pomodori e ceci scolati; condisci con basilico e poco olio.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Spaghetti aglio, olio e broccoli", "desc": "80 g spaghetti, broccoli, aglio, 10 g olio EVO", "kcal": 600, "type": "pranzo", "recipe": "Cuoci i broccoli con la pasta, ripassa con aglio e olio dosato.", "course": "primo"}, {"style": "Italiano leggero", "name": "Pasta al pesto leggero", "desc": "80 g pasta, basilico, 10 g pinoli, 15 g parmigiano, 5 g olio EVO", "kcal": 600, "type": "pranzo", "recipe": "Frulla basilico, pinoli, parmigiano e poco olio, allungando con acqua di cottura.", "course": "primo"}, {"style": "Italiano leggero", "name": "Riso con radicchio", "desc": "80 g riso, radicchio, 15 g parmigiano, brodo leggero", "kcal": 600, "type": "pranzo", "recipe": "Stufa il radicchio, aggiungi il riso e porta a cottura con brodo; manteca con parmigiano.", "course": "primo"}, {"style": "Italiano leggero", "name": "Pasta con cavolfiore", "desc": "80 g pasta, cavolfiore, 15 g parmigiano, 5 g olio EVO", "kcal": 600, "type": "pranzo", "recipe": "Lessa il cavolfiore, uniscilo alla pasta e completa con parmigiano e olio.", "course": "primo"}, {"style": "Italiano leggero", "name": "Riso con asparagi", "desc": "80 g riso, asparagi, 15 g parmigiano, 5 g olio EVO", "kcal": 600, "type": "pranzo", "recipe": "Cuoci gli asparagi, aggiungi il riso e porta a cottura con brodo leggero.", "course": "primo"}, {"style": "Italiano leggero", "name": "Pasta con piselli e prosciutto cotto", "desc": "75 g pasta, 120 g piselli, 50 g prosciutto cotto sgrassato", "kcal": 600, "type": "pranzo", "recipe": "Cuoci i piselli, aggiungi prosciutto a listarelle e condisci la pasta.", "course": "primo"}, {"style": "Italiano leggero", "name": "Polenta con funghi", "desc": "90 g farina di mais, funghi, 20 g parmigiano", "kcal": 600, "type": "pranzo", "recipe": "Prepara una polenta morbida e servila con funghi trifolati e parmigiano.", "course": "primo"}, {"style": "Italiano leggero", "name": "Pasta con zucca e rosmarino", "desc": "80 g pasta, 250 g zucca, rosmarino, 10 g parmigiano", "kcal": 600, "type": "pranzo", "recipe": "Stufa la zucca con rosmarino, schiacciane una parte e manteca la pasta.", "course": "primo"}, {"style": "Italiano leggero", "name": "Riso con carciofi", "desc": "80 g riso, carciofi, 15 g parmigiano", "kcal": 600, "type": "pranzo", "recipe": "Stufa i carciofi e porta il riso a cottura con brodo leggero.", "course": "primo"}, {"style": "Italiano leggero", "name": "Pasta ricotta e pomodoro", "desc": "80 g pasta, 80 g ricotta, pomodoro, basilico", "kcal": 600, "type": "pranzo", "recipe": "Condisci la pasta con salsa di pomodoro e ricotta stemperata con acqua di cottura.", "course": "primo"}, {"style": "Italiano leggero", "name": "Orzotto ai funghi", "desc": "80 g orzo, funghi, 15 g parmigiano", "kcal": 600, "type": "pranzo", "recipe": "Cuoci l'orzo come un risotto con funghi e brodo; completa con parmigiano.", "course": "primo"}, {"style": "Italiano leggero", "name": "Pasta con fave e pecorino leggero", "desc": "75 g pasta, 130 g fave, 15 g pecorino", "kcal": 600, "type": "pranzo", "recipe": "Cuoci le fave, uniscile alla pasta e completa con poco pecorino.", "course": "primo"}, {"style": "Italiano leggero", "name": "Scaloppine di pollo al limone", "desc": "160 g pollo, limone, verdure, 70 g pane", "kcal": 590, "type": "cena", "recipe": "Infarina appena il pollo, cuocilo in padella antiaderente e sfuma con limone.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Tacchino alla pizzaiola", "desc": "160 g tacchino, pomodoro, origano, 60 g pane", "kcal": 590, "type": "cena", "recipe": "Cuoci il tacchino nel pomodoro con origano e servi con pane.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Merluzzo gratinato leggero", "desc": "180 g merluzzo, 15 g pangrattato, verdure, 200 g patate", "kcal": 590, "type": "cena", "recipe": "Cospargi il merluzzo con poco pangrattato ed erbe e cuoci al forno.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Pollo con funghi", "desc": "160 g pollo, funghi, 70 g pane, verdure", "kcal": 590, "type": "cena", "recipe": "Cuoci pollo e funghi in padella con prezzemolo e poco brodo.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Vitello al limone", "desc": "150 g vitello, limone, verdure, 200 g patate", "kcal": 590, "type": "cena", "recipe": "Cuoci il vitello rapidamente in padella e completa con succo di limone.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Frittata al forno con patate", "desc": "2 uova + 100 g albumi, 150 g patate, cipolla, insalata", "kcal": 590, "type": "cena", "recipe": "Cuoci le patate a cubetti, uniscile alle uova e termina la frittata in forno.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Polpettone di tacchino leggero", "desc": "160 g tacchino, verdure, poco pangrattato, 60 g pane", "kcal": 590, "type": "cena", "recipe": "Impasta tacchino, verdure tritate e poco pangrattato; forma e cuoci al forno.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Sogliola alla mugnaia leggera", "desc": "180 g sogliola, limone, verdure, 70 g pane", "kcal": 590, "type": "cena", "recipe": "Passa appena la sogliola nella farina, cuoci in padella antiaderente e completa con limone.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Bresaola con ricotta e rucola", "desc": "80 g bresaola, 100 g ricotta, rucola, 70 g pane", "kcal": 590, "type": "cena", "recipe": "Servi bresaola, ricotta e rucola con limone e pane.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Pollo arrosto senza pelle", "desc": "170 g pollo, 200 g patate, verdure", "kcal": 590, "type": "cena", "recipe": "Arrostisci il pollo senza pelle con erbe e servi con patate e verdure.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Hamburger di manzo magro", "desc": "150 g manzo magro, 70 g pane, pomodoro, insalata", "kcal": 590, "type": "cena", "recipe": "Cuoci l'hamburger alla piastra e servi con pane, pomodoro e insalata.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Tacchino con zucchine", "desc": "160 g tacchino, zucchine, 70 g pane, 10 g olio EVO", "kcal": 590, "type": "cena", "recipe": "Cuoci tacchino e zucchine in padella antiaderente e completa con olio EVO.", "course": "secondo"}, {"style": "Vegetariano", "name": "Pasta con lenticchie rosse", "desc": "75 g pasta, 150 g lenticchie rosse cotte, pomodoro", "kcal": 600, "type": "pranzo", "recipe": "Cuoci le lenticchie nel pomodoro e unisci la pasta, completando con erbe aromatiche.", "course": "primo"}, {"style": "Vegetariano", "name": "Risotto piselli e menta", "desc": "80 g riso, 140 g piselli, menta, 15 g parmigiano", "kcal": 600, "type": "pranzo", "recipe": "Cuoci il risotto con i piselli e completa con menta e parmigiano.", "course": "primo"}, {"style": "Vegetariano", "name": "Pasta con pesto di rucola", "desc": "80 g pasta, rucola, 15 g noci, 15 g parmigiano", "kcal": 600, "type": "pranzo", "recipe": "Frulla rucola, noci e parmigiano con poca acqua di cottura e condisci la pasta.", "course": "primo"}, {"style": "Vegetariano", "name": "Quinoa con lenticchie", "desc": "75 g quinoa, 150 g lenticchie, verdure", "kcal": 600, "type": "pranzo", "recipe": "Cuoci la quinoa e uniscila a lenticchie e verdure croccanti.", "course": "primo"}, {"style": "Vegetariano", "name": "Pasta con crema di cannellini", "desc": "75 g pasta, 160 g cannellini, rosmarino, 5 g olio EVO", "kcal": 600, "type": "pranzo", "recipe": "Frulla parte dei cannellini, unisci la pasta e completa con rosmarino.", "course": "primo"}, {"style": "Vegetariano", "name": "Riso con tofu e piselli", "desc": "75 g riso, 130 g tofu, 120 g piselli", "kcal": 600, "type": "pranzo", "recipe": "Cuoci il riso, rosola il tofu e unisci i piselli.", "course": "primo"}, {"style": "Vegetariano", "name": "Bulgur con ceci e feta", "desc": "75 g bulgur, 120 g ceci, 50 g feta, verdure", "kcal": 600, "type": "pranzo", "recipe": "Cuoci il bulgur e unisci ceci, feta e verdure.", "course": "primo"}, {"style": "Vegetariano", "name": "Pasta con melanzane e mozzarella", "desc": "75 g pasta, melanzane, 80 g mozzarella, pomodoro", "kcal": 600, "type": "pranzo", "recipe": "Griglia le melanzane, uniscile al pomodoro e alla pasta; aggiungi mozzarella a fine cottura.", "course": "primo"}, {"style": "Vegetariano", "name": "Riso con fagioli rossi", "desc": "75 g riso, 150 g fagioli rossi, peperoni", "kcal": 600, "type": "pranzo", "recipe": "Cuoci il riso e uniscilo a fagioli e peperoni stufati.", "course": "primo"}, {"style": "Vegetariano", "name": "Pasta con crema di broccoli e noci", "desc": "75 g pasta, broccoli, 15 g noci, 10 g parmigiano", "kcal": 600, "type": "pranzo", "recipe": "Frulla parte dei broccoli con noci e parmigiano e condisci la pasta.", "course": "primo"}, {"style": "Vegetariano", "name": "Farro con edamame e verdure", "desc": "75 g farro, 130 g edamame, verdure", "kcal": 600, "type": "pranzo", "recipe": "Lessa farro ed edamame e uniscili alle verdure con limone.", "course": "primo"}, {"style": "Vegetariano", "name": "Burger di ceci", "desc": "180 g ceci, spezie, poco pangrattato, verdure, 60 g pane", "kcal": 590, "type": "cena", "recipe": "Schiaccia i ceci, forma burger con spezie e pangrattato e cuoci al forno.", "course": "secondo"}, {"style": "Vegetariano", "name": "Burger di fagioli rossi", "desc": "180 g fagioli rossi, cipolla, spezie, 60 g pane", "kcal": 590, "type": "cena", "recipe": "Frulla grossolanamente i fagioli, forma burger e cuoci in forno.", "course": "secondo"}, {"style": "Vegetariano", "name": "Tofu al sesamo con verdure", "desc": "160 g tofu, 5 g sesamo, verdure, 60 g pane", "kcal": 590, "type": "cena", "recipe": "Rosola il tofu con sesamo e servi con verdure e pane.", "course": "secondo"}, {"style": "Vegetariano", "name": "Tempeh alla piastra", "desc": "150 g tempeh, verdure, 200 g patate", "kcal": 590, "type": "cena", "recipe": "Marina il tempeh con limone e spezie, griglialo e servi con patate.", "course": "secondo"}, {"style": "Vegetariano", "name": "Uova in purgatorio", "desc": "2 uova + 100 g albumi, pomodoro, 70 g pane", "kcal": 590, "type": "cena", "recipe": "Cuoci le uova direttamente in salsa di pomodoro e servi con pane.", "course": "secondo"}, {"style": "Vegetariano", "name": "Ricotta con spinaci al forno", "desc": "180 g ricotta, spinaci, 60 g pane, insalata", "kcal": 590, "type": "cena", "recipe": "Mescola ricotta e spinaci, gratina al forno e servi con pane e insalata.", "course": "secondo"}, {"style": "Vegetariano", "name": "Halloumi grigliato con insalata", "desc": "100 g halloumi, insalata, pomodoro, 70 g pane", "kcal": 590, "type": "cena", "recipe": "Griglia l'halloumi e servilo con insalata, pomodoro e pane.", "course": "secondo"}, {"style": "Vegetariano", "name": "Polpette di ceci e zucchine", "desc": "160 g ceci, zucchine, poco pangrattato, 60 g pane", "kcal": 590, "type": "cena", "recipe": "Schiaccia ceci e zucchine cotte, forma polpette e cuoci al forno.", "course": "secondo"}, {"style": "Vegetariano", "name": "Frittata con carciofi", "desc": "2 uova + 100 g albumi, carciofi, 70 g pane", "kcal": 590, "type": "cena", "recipe": "Stufa i carciofi, unisci le uova e cuoci la frittata.", "course": "secondo"}, {"style": "Vegetariano", "name": "Tofu al pomodoro e olive", "desc": "160 g tofu, pomodoro, poche olive, 70 g pane", "kcal": 590, "type": "cena", "recipe": "Rosola il tofu e lascialo insaporire nel pomodoro con poche olive.", "course": "secondo"}, {"style": "Vegetariano", "name": "Mozzarella con fagioli cannellini", "desc": "125 g mozzarella, 120 g cannellini, pomodoro, insalata", "kcal": 590, "type": "cena", "recipe": "Unisci mozzarella, cannellini e pomodoro e condisci con erbe.", "course": "secondo"}, {"style": "Vegetariano", "name": "Uova sode con hummus e verdure", "desc": "2 uova, 70 g hummus, verdure, 60 g pane", "kcal": 590, "type": "cena", "recipe": "Servi le uova sode con hummus, crudité di verdure e pane.", "course": "secondo"}, {"style": "Vegetariano", "name": "Seitan con peperoni", "desc": "160 g seitan, peperoni, 70 g pane", "kcal": 590, "type": "cena", "recipe": "Rosola il seitan con peperoni e aromi e servi con pane.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Riso con gamberi e piselli", "desc": "70 g riso, 150 g gamberi, 100 g piselli", "kcal": 600, "type": "pranzo", "recipe": "Cuoci il riso, salta i gamberi e unisci i piselli.", "course": "primo"}, {"style": "Proteico leggero", "name": "Pasta con pollo e pomodorini", "desc": "70 g pasta, 130 g pollo, pomodorini", "kcal": 600, "type": "pranzo", "recipe": "Griglia il pollo a cubetti e uniscilo alla pasta con pomodorini saltati.", "course": "primo"}, {"style": "Proteico leggero", "name": "Quinoa con tonno e verdure", "desc": "70 g quinoa, 110 g tonno al naturale, verdure", "kcal": 600, "type": "pranzo", "recipe": "Cuoci la quinoa, aggiungi tonno sgocciolato e verdure.", "course": "primo"}, {"style": "Proteico leggero", "name": "Riso con tacchino e curry", "desc": "70 g riso, 140 g tacchino, verdure, curry", "kcal": 600, "type": "pranzo", "recipe": "Cuoci il riso e servi con tacchino e verdure saltati al curry.", "course": "primo"}, {"style": "Proteico leggero", "name": "Pasta con salmone e zucchine", "desc": "70 g pasta, 110 g salmone, zucchine", "kcal": 630, "type": "pranzo", "recipe": "Cuoci il salmone a cubetti con zucchine e condisci la pasta.", "course": "primo"}, {"style": "Proteico leggero", "name": "Farro con tonno e cannellini", "desc": "70 g farro, 90 g tonno, 100 g cannellini, pomodoro", "kcal": 600, "type": "pranzo", "recipe": "Lessa il farro e uniscilo a tonno, cannellini e pomodoro.", "course": "primo"}, {"style": "Proteico leggero", "name": "Riso con albumi e verdure", "desc": "70 g riso, 180 g albumi, verdure", "kcal": 600, "type": "pranzo", "recipe": "Cuoci il riso; strapazza gli albumi con le verdure e unisci.", "course": "primo"}, {"style": "Proteico leggero", "name": "Pasta con gamberi e broccoli", "desc": "70 g pasta, 150 g gamberi, broccoli", "kcal": 600, "type": "pranzo", "recipe": "Cuoci pasta e broccoli e aggiungi i gamberi saltati.", "course": "primo"}, {"style": "Proteico leggero", "name": "Cous cous con tonno e ceci", "desc": "65 g cous cous, 90 g tonno, 90 g ceci, verdure", "kcal": 600, "type": "pranzo", "recipe": "Prepara il cous cous e unisci tonno, ceci e verdure.", "course": "primo"}, {"style": "Proteico leggero", "name": "Quinoa con pollo e avocado", "desc": "65 g quinoa, 130 g pollo, 40 g avocado, verdure", "kcal": 600, "type": "pranzo", "recipe": "Cuoci la quinoa, aggiungi pollo grigliato, avocado e verdure.", "course": "primo"}, {"style": "Proteico leggero", "name": "Riso con manzo magro e zucchine", "desc": "70 g riso, 130 g manzo magro, zucchine", "kcal": 600, "type": "pranzo", "recipe": "Cuoci il riso e servi con straccetti di manzo e zucchine.", "course": "primo"}, {"style": "Proteico leggero", "name": "Merluzzo con ceci e verdure", "desc": "180 g merluzzo, 100 g ceci, verdure", "kcal": 590, "type": "cena", "recipe": "Cuoci il merluzzo al forno e servi con ceci e verdure.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Salmone con asparagi", "desc": "150 g salmone, asparagi, 180 g patate", "kcal": 620, "type": "cena", "recipe": "Cuoci il salmone e gli asparagi al forno e accompagna con patate.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Pollo allo yogurt e spezie", "desc": "170 g pollo, yogurt bianco, spezie, verdure, 60 g pane", "kcal": 590, "type": "cena", "recipe": "Marina il pollo nello yogurt e spezie, poi cuocilo alla piastra.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Tacchino con funghi", "desc": "170 g tacchino, funghi, 70 g pane", "kcal": 590, "type": "cena", "recipe": "Cuoci il tacchino con funghi e prezzemolo in padella antiaderente.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Tonno fresco con insalata", "desc": "170 g tonno fresco, insalata, 200 g patate", "kcal": 590, "type": "cena", "recipe": "Scottare il tonno e servirlo con insalata e patate.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Roast-beef con verdure", "desc": "150 g roast-beef, verdure, 70 g pane", "kcal": 590, "type": "cena", "recipe": "Servi il roast-beef con verdure grigliate e pane.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Uova e fiocchi di latte", "desc": "2 uova, 120 g fiocchi di latte, verdure, 60 g pane", "kcal": 590, "type": "cena", "recipe": "Cuoci le uova a piacere e servi con fiocchi di latte, verdure e pane.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Gamberi con zucchine", "desc": "190 g gamberi, zucchine, 70 g pane", "kcal": 590, "type": "cena", "recipe": "Salta gamberi e zucchine rapidamente e servi con pane.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Sogliola con patate", "desc": "190 g sogliola, 220 g patate, verdure", "kcal": 590, "type": "cena", "recipe": "Cuoci la sogliola al forno o piastra e servi con patate.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Pollo con broccoli", "desc": "170 g pollo, broccoli, 70 g pane", "kcal": 590, "type": "cena", "recipe": "Griglia il pollo e servi con broccoli al vapore e pane.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Vitello magro con insalata", "desc": "160 g vitello, insalata, 200 g patate", "kcal": 590, "type": "cena", "recipe": "Cuoci il vitello alla piastra e servi con insalata e patate.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Frittata di albumi e tonno", "desc": "1 uovo + 180 g albumi, 80 g tonno, verdure, 60 g pane", "kcal": 590, "type": "cena", "recipe": "Mescola uovo, albumi e tonno sgocciolato e cuoci in padella antiaderente.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Tacchino con spinaci", "desc": "170 g tacchino, spinaci, 70 g pane", "kcal": 590, "type": "cena", "recipe": "Cuoci il tacchino alla piastra e servi con spinaci e pane.", "course": "secondo"}, {"style": "Pesce", "name": "Risotto ai frutti di mare", "desc": "80 g riso, 160 g frutti di mare, pomodoro, prezzemolo", "kcal": 600, "type": "pranzo", "recipe": "Cuoci il risotto con brodo leggero e aggiungi i frutti di mare negli ultimi minuti.", "course": "primo"}, {"style": "Pesce", "name": "Pasta con cozze e pomodoro", "desc": "80 g pasta, 200 g cozze con guscio, pomodoro, prezzemolo", "kcal": 600, "type": "pranzo", "recipe": "Apri le cozze, filtra il liquido e uniscile alla pasta con pomodoro.", "course": "primo"}, {"style": "Pesce", "name": "Riso con gamberi e curry", "desc": "75 g riso, 150 g gamberi, verdure, curry", "kcal": 600, "type": "pranzo", "recipe": "Cuoci il riso e abbinalo a gamberi e verdure saltati al curry.", "course": "primo"}, {"style": "Pesce", "name": "Pasta con merluzzo e pomodorini", "desc": "75 g pasta, 140 g merluzzo, pomodorini", "kcal": 600, "type": "pranzo", "recipe": "Cuoci il merluzzo a pezzi con pomodorini e usalo per condire la pasta.", "course": "primo"}, {"style": "Pesce", "name": "Farro con tonno e olive", "desc": "75 g farro, 100 g tonno, pomodoro, poche olive", "kcal": 600, "type": "pranzo", "recipe": "Lessa il farro e unisci tonno, pomodoro e poche olive.", "course": "primo"}, {"style": "Pesce", "name": "Orzo con salmone e piselli", "desc": "75 g orzo, 110 g salmone, 120 g piselli", "kcal": 630, "type": "pranzo", "recipe": "Cuoci l'orzo e i piselli e aggiungi salmone cotto a cubetti.", "course": "primo"}, {"style": "Pesce", "name": "Pasta con alici e broccoli", "desc": "80 g pasta, 50 g alici, broccoli, 5 g olio EVO", "kcal": 600, "type": "pranzo", "recipe": "Cuoci pasta e broccoli e insaporisci con alici sciolte in padella.", "course": "primo"}, {"style": "Pesce", "name": "Riso con calamari e zucchine", "desc": "75 g riso, 160 g calamari, zucchine", "kcal": 600, "type": "pranzo", "recipe": "Cuoci il riso e uniscilo a calamari e zucchine saltati velocemente.", "course": "primo"}, {"style": "Pesce", "name": "Cous cous con gamberi e ceci", "desc": "70 g cous cous, 130 g gamberi, 90 g ceci, verdure", "kcal": 600, "type": "pranzo", "recipe": "Prepara il cous cous e unisci gamberi, ceci e verdure.", "course": "primo"}, {"style": "Pesce", "name": "Pasta con sardine e finocchio", "desc": "75 g pasta, 100 g sardine, finocchio, prezzemolo", "kcal": 600, "type": "pranzo", "recipe": "Cuoci il finocchio, aggiungi le sardine e condisci la pasta.", "course": "primo"}, {"style": "Pesce", "name": "Riso venere con salmone", "desc": "75 g riso venere, 120 g salmone, zucchine", "kcal": 630, "type": "pranzo", "recipe": "Cuoci il riso venere e servilo con salmone e zucchine.", "course": "primo"}, {"style": "Pesce", "name": "Pasta con pesce spada e melanzane", "desc": "75 g pasta, 130 g pesce spada, melanzane, pomodoro", "kcal": 600, "type": "pranzo", "recipe": "Cuoci pesce spada e melanzane a cubetti con pomodoro e condisci la pasta.", "course": "primo"}, {"style": "Pesce", "name": "Pesce spada alla griglia", "desc": "180 g pesce spada, verdure, 200 g patate", "kcal": 590, "type": "cena", "recipe": "Griglia il pesce spada con limone e servi con patate e verdure.", "course": "secondo"}, {"style": "Pesce", "name": "Orata con finocchi", "desc": "180 g orata, finocchi, 200 g patate", "kcal": 590, "type": "cena", "recipe": "Cuoci orata e finocchi al forno e servi con patate.", "course": "secondo"}, {"style": "Pesce", "name": "Branzino al cartoccio", "desc": "180 g branzino, pomodorini, verdure, 70 g pane", "kcal": 590, "type": "cena", "recipe": "Cuoci il branzino al cartoccio con pomodorini ed erbe.", "course": "secondo"}, {"style": "Pesce", "name": "Polpo con patate", "desc": "180 g polpo cotto, 220 g patate, prezzemolo, 5 g olio EVO", "kcal": 590, "type": "cena", "recipe": "Lessa polpo e patate, taglia e condisci con prezzemolo, limone e olio.", "course": "secondo"}, {"style": "Pesce", "name": "Seppie alla griglia", "desc": "180 g seppie, verdure, 70 g pane", "kcal": 590, "type": "cena", "recipe": "Griglia le seppie e servi con verdure, pane e limone.", "course": "secondo"}, {"style": "Pesce", "name": "Cozze al pomodoro con pane", "desc": "350 g cozze con guscio, pomodoro, 80 g pane", "kcal": 590, "type": "cena", "recipe": "Apri le cozze nel pomodoro con prezzemolo e servi con pane tostato.", "course": "secondo"}, {"style": "Pesce", "name": "Merluzzo con ceci", "desc": "180 g merluzzo, 120 g ceci, pomodoro, verdure", "kcal": 590, "type": "cena", "recipe": "Cuoci il merluzzo con pomodoro e servi con ceci e verdure.", "course": "secondo"}, {"style": "Pesce", "name": "Sgombro al forno", "desc": "170 g sgombro, verdure, 200 g patate", "kcal": 620, "type": "cena", "recipe": "Inforna lo sgombro con limone ed erbe e servi con patate.", "course": "secondo"}, {"style": "Pesce", "name": "Salmone alla piastra con spinaci", "desc": "150 g salmone, spinaci, 180 g patate", "kcal": 620, "type": "cena", "recipe": "Cuoci il salmone alla piastra e servi con spinaci e patate.", "course": "secondo"}, {"style": "Pesce", "name": "Gamberoni al forno", "desc": "200 g gamberoni, verdure, 70 g pane", "kcal": 590, "type": "cena", "recipe": "Inforna i gamberoni con limone e prezzemolo e servi con verdure e pane.", "course": "secondo"}, {"style": "Pesce", "name": "Nasello con pomodoro e olive", "desc": "190 g nasello, pomodoro, poche olive, 70 g pane", "kcal": 590, "type": "cena", "recipe": "Cuoci il nasello nel pomodoro con poche olive e origano.", "course": "secondo"}, {"style": "Pesce", "name": "Trota salmonata con zucchine", "desc": "180 g trota salmonata, zucchine, 200 g patate", "kcal": 590, "type": "cena", "recipe": "Cuoci la trota al forno e servi con zucchine e patate.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Pizza Margherita", "desc": "1 pizza tonda media con pomodoro, mozzarella e basilico", "kcal": 750, "type": "pranzo", "course": "primo", "recipe": "Stendi l'impasto, aggiungi passata di pomodoro e mozzarella. Cuoci in forno molto caldo e completa con basilico."}, {"style": "Mediterraneo", "name": "Pizza verdure grigliate", "desc": "1 pizza tonda media con pomodoro, mozzarella e verdure grigliate", "kcal": 790, "type": "pranzo", "course": "primo", "recipe": "Stendi l'impasto, aggiungi pomodoro, mozzarella e verdure grigliate. Cuoci in forno caldo."}, {"style": "Mediterraneo", "name": "Pizza tonno e cipolla", "desc": "1 pizza tonda media con pomodoro, mozzarella, tonno e cipolla", "kcal": 820, "type": "pranzo", "course": "primo", "recipe": "Condisci la base con pomodoro, mozzarella, tonno sgocciolato e cipolla affettata sottile. Cuoci in forno caldo."}, {"style": "Italiano leggero", "name": "Pizza Margherita leggera", "desc": "1 pizza media con pomodoro, mozzarella in quantità moderata e basilico", "kcal": 700, "type": "pranzo", "course": "primo", "recipe": "Prepara una base sottile, usa pomodoro e una quantità moderata di mozzarella. Cuoci in forno molto caldo e aggiungi basilico."}, {"style": "Italiano leggero", "name": "Pizza prosciutto cotto e funghi", "desc": "1 pizza media con pomodoro, mozzarella, prosciutto cotto sgrassato e funghi", "kcal": 780, "type": "pranzo", "course": "primo", "recipe": "Condisci la base con pomodoro, mozzarella, funghi e prosciutto cotto. Cuoci in forno caldo."}, {"style": "Vegetariano", "name": "Pizza vegetariana", "desc": "1 pizza media con pomodoro, mozzarella, zucchine, peperoni e melanzane", "kcal": 780, "type": "pranzo", "course": "primo", "recipe": "Condisci la base con pomodoro, mozzarella e verdure grigliate. Cuoci in forno molto caldo."}, {"style": "Proteico leggero", "name": "Pizza bresaola e rucola", "desc": "1 pizza media con pomodoro, mozzarella moderata, bresaola e rucola", "kcal": 790, "type": "pranzo", "course": "primo", "recipe": "Cuoci la pizza con pomodoro e mozzarella; aggiungi bresaola e rucola soltanto dopo la cottura."}, {"style": "Pesce", "name": "Pizza tonno e pomodoro", "desc": "1 pizza media con pomodoro, mozzarella moderata e tonno al naturale", "kcal": 800, "type": "pranzo", "course": "primo", "recipe": "Condisci con pomodoro, mozzarella e tonno ben sgocciolato e cuoci in forno caldo."}, {"style": "Mediterraneo", "name": "PRANZO LIBERO", "desc": "Pasto libero: scegliete cosa mangiare senza menu predefinito.", "kcal": 0, "type": "pranzo", "course": "libero_pranzo", "recipe": "Pasto libero. Il programma non impone una ricetta né quantità."}, {"style": "Mediterraneo", "name": "CENA LIBERA", "desc": "Pasto libero: scegliete cosa mangiare senza menu predefinito.", "kcal": 0, "type": "cena", "course": "libero_cena", "recipe": "Pasto libero. Il programma non impone una ricetta né quantità."}, {"style": "Italiano leggero", "name": "PRANZO LIBERO", "desc": "Pasto libero: scegliete cosa mangiare senza menu predefinito.", "kcal": 0, "type": "pranzo", "course": "libero_pranzo", "recipe": "Pasto libero. Il programma non impone una ricetta né quantità."}, {"style": "Italiano leggero", "name": "CENA LIBERA", "desc": "Pasto libero: scegliete cosa mangiare senza menu predefinito.", "kcal": 0, "type": "cena", "course": "libero_cena", "recipe": "Pasto libero. Il programma non impone una ricetta né quantità."}, {"style": "Vegetariano", "name": "PRANZO LIBERO", "desc": "Pasto libero: scegliete cosa mangiare senza menu predefinito.", "kcal": 0, "type": "pranzo", "course": "libero_pranzo", "recipe": "Pasto libero. Il programma non impone una ricetta né quantità."}, {"style": "Vegetariano", "name": "CENA LIBERA", "desc": "Pasto libero: scegliete cosa mangiare senza menu predefinito.", "kcal": 0, "type": "cena", "course": "libero_cena", "recipe": "Pasto libero. Il programma non impone una ricetta né quantità."}, {"style": "Proteico leggero", "name": "PRANZO LIBERO", "desc": "Pasto libero: scegliete cosa mangiare senza menu predefinito.", "kcal": 0, "type": "pranzo", "course": "libero_pranzo", "recipe": "Pasto libero. Il programma non impone una ricetta né quantità."}, {"style": "Proteico leggero", "name": "CENA LIBERA", "desc": "Pasto libero: scegliete cosa mangiare senza menu predefinito.", "kcal": 0, "type": "cena", "course": "libero_cena", "recipe": "Pasto libero. Il programma non impone una ricetta né quantità."}, {"style": "Pesce", "name": "PRANZO LIBERO", "desc": "Pasto libero: scegliete cosa mangiare senza menu predefinito.", "kcal": 0, "type": "pranzo", "course": "libero_pranzo", "recipe": "Pasto libero. Il programma non impone una ricetta né quantità."}, {"style": "Pesce", "name": "CENA LIBERA", "desc": "Pasto libero: scegliete cosa mangiare senza menu predefinito.", "kcal": 0, "type": "cena", "course": "libero_cena", "recipe": "Pasto libero. Il programma non impone una ricetta né quantità."}, {"style": "Mediterraneo", "name": "Pasta pomodoro e olive", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Pasta pomodoro e olive» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Mediterraneo", "name": "Risotto limone e rosmarino", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Risotto limone e rosmarino» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Mediterraneo", "name": "Cous cous ceci e peperoni", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Cous cous ceci e peperoni» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Mediterraneo", "name": "Pasta crema di melanzane", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Pasta crema di melanzane» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Mediterraneo", "name": "Riso zucchine e curcuma", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Riso zucchine e curcuma» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Mediterraneo", "name": "Orzo pomodorini e basilico", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Orzo pomodorini e basilico» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Mediterraneo", "name": "Pasta fagioli e salvia", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Pasta fagioli e salvia» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Mediterraneo", "name": "Farro carciofi e limone", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Farro carciofi e limone» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Mediterraneo", "name": "Riso melanzane e pomodoro", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Riso melanzane e pomodoro» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Mediterraneo", "name": "Pasta piselli e menta", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Pasta piselli e menta» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Mediterraneo", "name": "Pollo limone e capperi", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Pollo limone e capperi» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Tacchino pomodoro e basilico", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Tacchino pomodoro e basilico» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Orata con pomodorini", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Orata con pomodorini» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Merluzzo alle erbe", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Merluzzo alle erbe» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Frittata peperoni e cipolla", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Frittata peperoni e cipolla» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Manzo magro con melanzane", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Manzo magro con melanzane» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Salmone con finocchi", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Salmone con finocchi» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Pollo con carciofi", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Pollo con carciofi» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Seppie pomodoro e prezzemolo", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Seppie pomodoro e prezzemolo» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Mediterraneo", "name": "Ricotta con pomodori al forno", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Ricotta con pomodori al forno» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Pasta pomodoro e ricotta salata", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Pasta pomodoro e ricotta salata» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Italiano leggero", "name": "Risotto porri e parmigiano", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Risotto porri e parmigiano» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Italiano leggero", "name": "Pasta zucchine e zafferano", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Pasta zucchine e zafferano» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Italiano leggero", "name": "Riso pomodoro e piselli", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Riso pomodoro e piselli» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Italiano leggero", "name": "Gnocchi al pomodoro leggero", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Gnocchi al pomodoro leggero» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Italiano leggero", "name": "Pasta funghi e prezzemolo", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Pasta funghi e prezzemolo» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Italiano leggero", "name": "Orzo zucca e parmigiano", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Orzo zucca e parmigiano» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Italiano leggero", "name": "Pasta cavolo nero e ricotta", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Pasta cavolo nero e ricotta» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Italiano leggero", "name": "Riso melanzane e basilico", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Riso melanzane e basilico» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Italiano leggero", "name": "Pasta asparagi e limone", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Pasta asparagi e limone» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Italiano leggero", "name": "Pollo alla cacciatora leggero", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Pollo alla cacciatora leggero» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Tacchino al limone e salvia", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Tacchino al limone e salvia» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Merluzzo pomodoro e origano", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Merluzzo pomodoro e origano» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Frittata cipolle al forno", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Frittata cipolle al forno» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Vitello con funghi", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Vitello con funghi» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Pollo con carciofi leggero", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Pollo con carciofi leggero» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Sogliola limone e prezzemolo", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Sogliola limone e prezzemolo» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Uova strapazzate con spinaci", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Uova strapazzate con spinaci» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Tacchino con pomodorini", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Tacchino con pomodorini» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Italiano leggero", "name": "Manzo magro con zucchine", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Manzo magro con zucchine» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Vegetariano", "name": "Pasta ceci e pomodoro secco", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Pasta ceci e pomodoro secco» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Vegetariano", "name": "Riso tofu e verdure croccanti", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Riso tofu e verdure croccanti» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Vegetariano", "name": "Farro fagioli e pomodorini", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Farro fagioli e pomodorini» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Vegetariano", "name": "Pasta crema di piselli", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Pasta crema di piselli» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Vegetariano", "name": "Quinoa ceci e zucchine", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Quinoa ceci e zucchine» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Vegetariano", "name": "Orzo lenticchie e carote", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Orzo lenticchie e carote» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Vegetariano", "name": "Pasta tofu e melanzane", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Pasta tofu e melanzane» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Vegetariano", "name": "Riso edamame e peperoni", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Riso edamame e peperoni» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Vegetariano", "name": "Cous cous lenticchie e verdure", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Cous cous lenticchie e verdure» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Vegetariano", "name": "Pasta cannellini e pomodoro", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Pasta cannellini e pomodoro» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Vegetariano", "name": "Burger di lenticchie rosse", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Burger di lenticchie rosse» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Vegetariano", "name": "Tofu al curry con verdure", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Tofu al curry con verdure» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Vegetariano", "name": "Frittata porri e ricotta", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Frittata porri e ricotta» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Vegetariano", "name": "Seitan alla pizzaiola", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Seitan alla pizzaiola» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Vegetariano", "name": "Polpette di fagioli cannellini", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Polpette di fagioli cannellini» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Vegetariano", "name": "Tempeh con zucchine", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Tempeh con zucchine» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Vegetariano", "name": "Uova con spinaci e feta", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Uova con spinaci e feta» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Vegetariano", "name": "Tofu croccante al forno", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Tofu croccante al forno» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Vegetariano", "name": "Burger di quinoa e ceci", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Burger di quinoa e ceci» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Vegetariano", "name": "Ricotta gratinata con pomodorini", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Ricotta gratinata con pomodorini» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Riso pollo e piselli", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Riso pollo e piselli» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Proteico leggero", "name": "Pasta tonno e pomodorini", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Pasta tonno e pomodorini» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Proteico leggero", "name": "Quinoa tacchino e zucchine", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Quinoa tacchino e zucchine» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Proteico leggero", "name": "Farro pollo e peperoni", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Farro pollo e peperoni» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Proteico leggero", "name": "Pasta gamberi e piselli", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Pasta gamberi e piselli» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Proteico leggero", "name": "Riso salmone e broccoli", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Riso salmone e broccoli» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Proteico leggero", "name": "Cous cous tacchino e verdure", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Cous cous tacchino e verdure» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Proteico leggero", "name": "Pasta ricotta e tonno", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Pasta ricotta e tonno» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Proteico leggero", "name": "Quinoa gamberi e zucchine", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Quinoa gamberi e zucchine» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Proteico leggero", "name": "Riso manzo magro e peperoni", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Riso manzo magro e peperoni» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Proteico leggero", "name": "Pollo paprika e verdure", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Pollo paprika e verdure» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Tacchino al curry leggero", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Tacchino al curry leggero» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Tonno fresco con zucchine", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Tonno fresco con zucchine» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Merluzzo con lenticchie", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Merluzzo con lenticchie» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Manzo magro con broccoli", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Manzo magro con broccoli» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Salmone con fagiolini", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Salmone con fagiolini» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Gamberi con ceci", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Gamberi con ceci» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Pollo con spinaci", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Pollo con spinaci» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Tacchino con melanzane", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Tacchino con melanzane» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Proteico leggero", "name": "Omelette proteica ai funghi", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Omelette proteica ai funghi» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Pesce", "name": "Pasta tonno e capperi", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Pasta tonno e capperi» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Pesce", "name": "Riso gamberi e zucchine", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Riso gamberi e zucchine» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Pesce", "name": "Orzo salmone e pomodorini", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Orzo salmone e pomodorini» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Pesce", "name": "Pasta cozze e zucchine", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Pasta cozze e zucchine» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Pesce", "name": "Risotto calamari e limone", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Risotto calamari e limone» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Pesce", "name": "Farro sgombro e pomodoro", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Farro sgombro e pomodoro» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Pesce", "name": "Pasta merluzzo e olive", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Pasta merluzzo e olive» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Pesce", "name": "Riso seppie e piselli", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Riso seppie e piselli» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Pesce", "name": "Cous cous tonno e peperoni", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Cous cous tonno e peperoni» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Pesce", "name": "Pasta gamberi e pomodorini", "desc": "Porzione base per persona: 70–80 g di cereale/pasta + condimento indicato + verdure + olio EVO dosato", "kcal": 590, "type": "pranzo", "recipe": "Prepara gli ingredienti freschi, cuoci la base e completa il piatto «Pasta gamberi e pomodorini» con il condimento indicato. Usa olio EVO con moderazione e regola la porzione secondo la divisione scelta.", "course": "primo"}, {"style": "Pesce", "name": "Branzino con patate e rosmarino", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Branzino con patate e rosmarino» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Pesce", "name": "Orata al limone e prezzemolo", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Orata al limone e prezzemolo» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Pesce", "name": "Merluzzo con zucchine", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Merluzzo con zucchine» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Pesce", "name": "Salmone con broccoli", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Salmone con broccoli» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Pesce", "name": "Tonno fresco al sesamo", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Tonno fresco al sesamo» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Pesce", "name": "Calamari al forno con verdure", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Calamari al forno con verdure» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Pesce", "name": "Seppie con pomodorini", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Seppie con pomodorini» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Pesce", "name": "Sogliola con spinaci", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Sogliola con spinaci» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Pesce", "name": "Sgombro con finocchi", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Sgombro con finocchi» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}, {"style": "Pesce", "name": "Gamberoni con verdure grigliate", "desc": "Porzione base per persona: 150–190 g della fonte proteica indicata + verdure + contorno di pane o patate", "kcal": 590, "type": "cena", "recipe": "Cuoci «Gamberoni con verdure grigliate» alla piastra, al forno o in padella antiaderente secondo gli ingredienti. Accompagna con verdure e il contorno previsto, regolando la porzione secondo la divisione scelta.", "course": "secondo"}];
+const DAYS=['Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato','Domenica'];
+let plan=JSON.parse(localStorage.getItem('dieta_plan_v102')||'null')||{};
+let people=JSON.parse(localStorage.getItem('dieta_people_v106')||'{}');
+function ensurePeople(){
+ DAYS.forEach(d=>{
+   if(!people[d]) people[d]={};
+   ['pranzo','cena'].forEach(t=>{
+     if(!people[d][t]) people[d][t]={men:1,women:1};
+   });
+ });
+}
+function savePeople(){localStorage.setItem('dieta_people_v106',JSON.stringify(people));}
+function setPeople(day,type,sex,val){
+ ensurePeople();
+ let n=Math.max(0,Math.min(20,parseInt(val||0,10)));
+ people[day][type][sex]=n;
+ savePeople();
+ render();
+}
+function swapDay(day){
+ if(!plan?.[day])return;
+ const tmp=plan[day].pranzo;
+ plan[day].pranzo=plan[day].cena;
+ plan[day].cena=tmp;
+ save();
+ render();
+}
+let targetCell=null;
+function currentStyle(){ return document.getElementById('dietStyle')?.value || 'Mediterraneo'; }
+function pick(type,exclude=[]){
+ const style=currentStyle();
+ let a=DB.filter(x=>x.type===type && x.style===style && !exclude.includes(x.name));
+ if(!a.length) a=DB.filter(x=>x.type===type && x.style===style);
+ return a[Math.floor(Math.random()*a.length)];
+}
+function pickCourse(course,exclude=[]){
+ const style=currentStyle();
+ let a=DB.filter(x=>x.course===course && x.style==='Mediterraneo' && !exclude.includes(x.name));
+ if(!a.length) a=DB.filter(x=>x.course===course && x.style==='Mediterraneo');
+ if(!a.length) a=DB.filter(x=>x.course===course);
+ return a[Math.floor(Math.random()*a.length)];
+}
+function generate(){
+ let usedFirst=[], usedSecond=[];
+ DAYS.forEach((d,i)=>{
+   const firstAtLunch = i%2===0;
+   const primo=pickCourse('primo',usedFirst);
+   const secondo=pickCourse('secondo',usedSecond);
+   usedFirst.push(primo.name); usedSecond.push(secondo.name);
+   if(usedFirst.length>5)usedFirst.shift();
+   if(usedSecond.length>5)usedSecond.shift();
+   plan[d]=firstAtLunch ? {pranzo:primo,cena:secondo} : {pranzo:secondo,cena:primo};
+ });
+ save(); render();
+}
+function factor(kcal,type){
+ const m=+document.getElementById('kcalM').value||1800, f=+document.getElementById('kcalF').value||1600;
+ const share=type==='pranzo'?.37:.33;
+ return {m:(m*share/kcal),f:(f*share/kcal)};
+}
+function fmt(x){return Math.max(.65,Math.min(1.45,x)).toFixed(2).replace('.',',')}
+function render(){
+ ensurePeople();
+ if(!Object.keys(plan).length)generate();
+ const w=document.getElementById('week'); w.innerHTML='';
+ DAYS.forEach(d=>{
+   const day=document.createElement('div');day.className='day';
+   const pc=plan[d]?.pranzo?.course||'', cc=plan[d]?.cena?.course||'';
+   const schema=(pc==='libero_pranzo'||cc==='libero_cena')?
+      `${pc==='libero_pranzo'?'Pranzo: libero':'Pranzo: '+pc} · ${cc==='libero_cena'?'Cena: libera':'Cena: '+cc}`:
+      (pc==='primo'?'Pranzo: primo · Cena: secondo':'Pranzo: secondo · Cena: primo');
+   day.innerHTML=`<div class="dayhead"><strong>${d}</strong><button class="swapday" onclick="swapDay('${d}')">⇅ INVERTI</button><span>${schema}</span></div>`+
+   ['pranzo','cena'].map(t=>mealHTML(d,t,plan[d][t])).join('');
+   w.appendChild(day);
+ });
+ const m=+kcalM.value||1800,f=+kcalF.value||1600; 
+ localStorage.setItem('dieta_kcalM',m);localStorage.setItem('dieta_kcalF',f);
+}
+function portionSplit(day,type){
+ ensurePeople();
+ const mc=people[day][type].men, wc=people[day][type].women;
+ const mk=+document.getElementById('kcalM').value||1800;
+ const fk=+document.getElementById('kcalF').value||1600;
+ const totalWeight=mc*mk+wc*fk;
+ if(totalWeight<=0) return {mc,wc,mPct:0,fPct:0};
+ const mPct=mc?Math.round((mk/totalWeight)*100):0;
+ const fPct=wc?Math.round((fk/totalWeight)*100):0;
+ return {mc,wc,mPct,fPct};
+}
+function portionText(day,type){
+ const s=portionSplit(day,type);
+ if(s.mc+s.wc===0) return 'Nessun commensale impostato';
+ const mode=document.getElementById('portionMode')?.value||'percent';
+ if(mode==='grams'){
+   const totalG=Math.max(100,+document.getElementById('totalDishGrams')?.value||500);
+   const mk=+document.getElementById('kcalM').value||1800;
+   const fk=+document.getElementById('kcalF').value||1600;
+   const denom=s.mc*mk+s.wc*fk;
+   const manG=s.mc?Math.round(totalG*mk/denom):0;
+   const womanG=s.wc?Math.round(totalG*fk/denom):0;
+   let out=[];
+   if(s.mc) out.push(`👨 ${manG} g a uomo × ${s.mc}`);
+   if(s.wc) out.push(`👩 ${womanG} g a donna × ${s.wc}`);
+   return out.join(' &nbsp; · &nbsp; ');
+ }
+ let out=[];
+ if(s.mc) out.push(`👨 ${s.mPct}% a uomo × ${s.mc}`);
+ if(s.wc) out.push(`👩 ${s.fPct}% a donna × ${s.wc}`);
+ return out.join(' &nbsp; · &nbsp; ');
+}
+const DIET_STYLES=['Mediterraneo','Italiano leggero','Vegetariano','Proteico leggero','Pesce'];
+function mealStyle(day,type){
+ return plan?.[day]?.[type]?.style || 'Mediterraneo';
+}
+function mealStyleChanged(day,type,newStyle){
+ const current=plan?.[day]?.[type];
+ if(!current) return;
+ const isFree=(current.course||'').startsWith('libero_');
+ if(isFree){
+   const fc=type==='pranzo'?'libero_pranzo':'libero_cena';
+   const free=DB.find(x=>x.style===newStyle && x.course===fc);
+   if(free) plan[day][type]=free;
+ }else{
+   let a=DB.filter(x=>x.style===newStyle && x.course===current.course);
+   if(a.length) plan[day][type]=a[Math.floor(Math.random()*a.length)];
+ }
+ save(); render();
+}
+function styleSelectHTML(day,type,x){
+ return `<div class="mealstyle"><b>🍽 STILE DEL PASTO</b>
+ <select onchange="mealStyleChanged('${day}','${type}',this.value)">
+ ${DIET_STYLES.map(s=>`<option value="${s}" ${s===x.style?'selected':''}>${s}</option>`).join('')}
+ </select></div>`;
+}
+function mealHTML(day,type,x){
+ ensurePeople();
+ const isFree=(x.course||'').startsWith('libero_');
+ const course=isFree?'PASTO LIBERO':(x.course||'').toUpperCase();
+ const p=people[day][type];
+ return `<div class="meal"><h3>${type.toUpperCase()} · ${course} <button onclick="choose('${day}','${type}')">CAMBIA</button></h3>
+ ${styleSelectHTML(day,type,x)}
+ <div class="mealname">${x.name}</div><div class="desc">${x.desc}</div>${isFree?'':`<span class="kcal">Base ≈ ${x.kcal} kcal</span>`}
+ <div class="peoplebox"><b>👥 COMMENSALI A QUESTO PASTO</b>
+   <div class="peoplegrid">
+     <label>👨 Uomini <input type="number" min="0" max="20" value="${p.men}" onchange="setPeople('${day}','${type}','men',this.value)"></label>
+     <label>👩 Donne <input type="number" min="0" max="20" value="${p.women}" onchange="setPeople('${day}','${type}','women',this.value)"></label>
+   </div>
+ </div>
+ <div class="desc"><b>Stile:</b> ${x.style}<br><b>Divisione indicativa:</b><br>${portionText(day,type)}</div>
+ <button class="recipe-btn" onclick="showRecipe('${day}','${type}')">📖 RICETTA</button></div>`;
+}
+function alternativesFor(day,type){
+ const current=plan?.[day]?.[type];
+ const style=current?.style || 'Mediterraneo';
+ let course=current?.course || (type==='pranzo'?'primo':'secondo');
+ // If current meal is free, infer normal complementary course from the other meal.
+ if(course.startsWith('libero_')){
+   const other=type==='pranzo'?'cena':'pranzo';
+   const oc=plan?.[day]?.[other]?.course;
+   course=(oc==='primo')?'secondo':'primo';
+ }
+ let a=DB.filter(x=>x.style===style && x.course===course);
+ const freeCourse=type==='pranzo'?'libero_pranzo':'libero_cena';
+ const free=DB.find(x=>x.style===style && x.course===freeCourse);
+ if(free) a=[free,...a];
+ return {a,course,style};
+}
+function choose(day,type){
+ targetCell={day,type};
+ const r=alternativesFor(day,type);
+ modalTitle.textContent='Alternative ('+r.a.length+') · '+type.toUpperCase()+' · '+day+' · '+r.style;
+ options.innerHTML=r.a.map((x,i)=>`<div class="option" onclick="selectOpt(${i},'${type}')"><b>${x.name}${x.kcal?` · ${x.kcal} kcal`:''}</b><small>${x.desc}</small></div>`).join('');
+ modal.classList.add('open');
+}
+function selectOpt(i,type){
+ const r=alternativesFor(targetCell.day,type);
+ plan[targetCell.day][type]=r.a[i];
+ save();closeModal();render()
+}
+function showRecipe(day,type){
+ const x=plan?.[day]?.[type]; if(!x)return;
+ modalTitle.textContent='📖 Ricetta · '+x.name;
+ options.innerHTML=`<div class="option" style="cursor:default"><b>${x.name}</b><small style="display:block;margin:7px 0"><b>Ingredienti / porzione base:</b><br>${x.desc}</small><div style="font-size:13px;line-height:1.6;color:#33443a"><b>Preparazione:</b><br>${x.recipe||'Preparazione non disponibile.'}</div><div style="margin-top:10px;font-size:11px;color:#68776e"><b>Nota:</b> adatta le quantità usando il fattore porzione indicato nella scheda del pasto.</div></div>`;
+ modal.classList.add('open');
+}
+function closeModal(){modal.classList.remove('open')}
+function save(){localStorage.setItem('dieta_plan_v102',JSON.stringify(plan))}
+function resetPlan(){if(confirm('Azzerare il menu settimanale salvato?')){plan={};localStorage.removeItem('dieta_plan_v102');generate()}}
+function portionModeChanged(){
+ const mode=document.getElementById('portionMode')?.value||'percent';
+ const gc=document.getElementById('gramsControl');
+ if(gc) gc.style.display=mode==='grams'?'block':'none';
+ localStorage.setItem('dieta_portion_mode_v105',mode);
+ render();
+}
+
+kcalM.value=localStorage.getItem('dieta_kcalM')||1800;kcalF.value=localStorage.getItem('dieta_kcalF')||1600;
+portionMode.value=localStorage.getItem('dieta_portion_mode_v105')||'percent';
+totalDishGrams.value=localStorage.getItem('dieta_total_grams_v105')||500;
+gramsControl.style.display=portionMode.value==='grams'?'block':'none';
+totalDishGrams.onchange=function(){localStorage.setItem('dieta_total_grams_v105',this.value);render();};
+kcalM.onchange=render;kcalF.onchange=render;
+render();
+
+function printPlan(){
+  const box=document.getElementById('printOnly');
+  let out='<h1>DIETA GIANCARLO & PAOLA · MENU SETTIMANALE</h1>';
+  DAYS.forEach(day=>{
+    const p=plan?.[day]?.pranzo;
+    const c=plan?.[day]?.cena;
+    out+=`<section class="print-day"><h2>${day}</h2>`;
+    if(p){
+      out+=printMeal('PRANZO',p);
+    }
+    if(c){
+      out+=printMeal('CENA',c);
+    }
+    out+='</section>';
+  });
+  box.innerHTML=out;
+  window.print();
+}
+function printMeal(label,x){
+  const free=(x.course||'').startsWith('libero_');
+  if(free){
+    return `<div class="print-meal"><h3>${label}</h3><div class="dish">${x.name}</div><p>Pasto libero.</p></div>`;
+  }
+  return `<div class="print-meal">
+    <h3>${label}</h3>
+    <div class="dish">${x.name}</div>
+    <p><span class="label">Componenti:</span> ${x.desc||''}</p>
+    <p><span class="label">Preparazione:</span> ${x.recipe||''}</p>
+  </div>`;
+}
+
+</script><div id="printOnly"></div>
+
+<script>
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
+  });
+}
+</script>
+
+</body></html>
