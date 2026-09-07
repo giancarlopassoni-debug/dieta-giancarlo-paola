@@ -1,0 +1,14 @@
+DIETA GIANCARLO & PAOLA v1.14 WEB APP
+
+CONTENUTO
+- index.html
+- manifest.webmanifest
+- sw.js
+- icon-180.png
+- icon-512.png
+
+IMPORTANTE
+Su iPhone non aprire index.html direttamente dall'app File.
+Per funzionare come Web App, l'intera cartella deve essere pubblicata su un sito HTTPS, quindi aperta in Safari e aggiunta alla schermata Home.
+
+Dopo il primo caricamento online, il service worker permette anche l'uso offline dei file memorizzati nella cache.
