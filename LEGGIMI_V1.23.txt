@@ -1,0 +1,17 @@
+DIETA GIANCARLO & PAOLA — V.1.23
+
+FILE DA CARICARE NELLA ROOT DEL REPOSITORY GITHUB:
+- index.html
+- manifest.webmanifest
+- sw.js
+- icon-180.png
+- icon-192.png
+- icon-512.png
+
+IMPORTANTE:
+Sostituire i vecchi file omonimi nel repository. Non rinominare index.html.
+Il service worker usa la cache dieta-gp-v1.23 e rimuove automaticamente le vecchie cache quando la nuova versione prende il controllo.
+
+IPHONE:
+Aprire il sito GitHub Pages in Safari > Condividi > Aggiungi alla schermata Home.
+L'icona iPhone è icon-180.png.
