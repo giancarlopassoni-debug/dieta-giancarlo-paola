@@ -1,0 +1,15 @@
+"DIETA GIANCARLO & PAOLA · V.1.25
+
+Pacchetto aggiornato per GitHub Pages / iPhone.
+
+Aggiornamenti:
+- Database ricette ampliato con 95 nuove ricette uniche, ispirate per varietà e tipologie alle raccolte culinarie di GialloZafferano.
+- Ricette nuove riscritte per il programma, con descrizioni e preparazioni più dettagliate.
+- Mantenute le funzioni della V.1.23: inclusione/esclusione alimenti, contorni, preferiti, ricette nascoste, lista spesa, dispensa, costi e modalità iPhone.
+- Corretto il generatore: ora la generazione automatica rispetta lo stile selezionato invece di usare sempre Mediterraneo.
+- Versione aggiornata a V.1.25 in index.html, manifest e service worker.
+
+Fonti di ispirazione consultate:
+GialloZafferano e blog del network GialloZafferano per categorie e varietà di primi e secondi. I testi delle ricette inseriti nel programma sono stati redatti per questa applicazione e non sono copie dei testi delle fonti.
+
+Per GitHub: sostituire i file omonimi del repository con quelli contenuti nel pacchetto.
