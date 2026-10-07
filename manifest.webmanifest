@@ -1,14 +1,16 @@
 {
   "name": "DIETA GIANCARLO & PAOLA",
   "short_name": "Dieta G&P",
-  "start_url": "./",
+  "description": "Pianificatore alimentare personale - V.1.24",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#f4f7f4",
   "theme_color": "#1d5b42",
   "icons": [
     {
-      "src": "icon-180.png",
-      "sizes": "180x180",
+      "src": "icon-192.png",
+      "sizes": "192x192",
       "type": "image/png"
     },
     {
