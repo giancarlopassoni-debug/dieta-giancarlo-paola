@@ -1,14 +1,5 @@
-DIETA GIANCARLO & PAOLA v1.14 WEB APP
+DIETA GIANCARLO & PAOLA v1.15 WEB APP
 
-CONTENUTO
-- index.html
-- manifest.webmanifest
-- sw.js
-- icon-180.png
-- icon-512.png
+Database ampliato con molte nuove varianti di primi e secondi ispirate per tipologia a raccolte culinarie online, inclusa GialloZafferano. I testi delle preparazioni sono originali e adattati al pianificatore.
 
-IMPORTANTE
-Su iPhone non aprire index.html direttamente dall'app File.
-Per funzionare come Web App, l'intera cartella deve essere pubblicata su un sito HTTPS, quindi aperta in Safari e aggiunta alla schermata Home.
-
-Dopo il primo caricamento online, il service worker permette anche l'uso offline dei file memorizzati nella cache.
+Su iPhone pubblicare tutti i file su GitHub Pages HTTPS, aprire con Safari e usare Condividi > Aggiungi alla schermata Home.
