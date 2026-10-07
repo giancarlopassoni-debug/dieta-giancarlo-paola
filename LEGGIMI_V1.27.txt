@@ -1,0 +1,22 @@
+DIETA GIANCARLO & PAOLA - V.1.27
+
+Versione completa del pianificatore.
+
+NOVITA V1.27
+- Ricette del database rese complete nella scheda RICETTA DETTAGLIATA.
+- Ingredienti separati e quantita indicativa per 1 persona.
+- Preparazione riscritta in passaggi chiari e utilizzabili in cucina.
+- Stampa aggiornata con gli ingredienti della ricetta.
+- Mantenuta la vecchia icona preferita per iPhone.
+- Cache Service Worker aggiornata a v1.27.
+
+I nomi e le tipologie delle ricette sono stati utilizzati come riferimento culinario; i testi delle preparazioni sono originali del programma e non sono copiati da siti esterni.
+
+FILE DA CARICARE NEL ROOT GITHUB
+- index.html
+- manifest.webmanifest
+- sw.js
+- icon-180.png
+- icon-192.png
+- icon-512.png
+- apple-touch-icon.png
