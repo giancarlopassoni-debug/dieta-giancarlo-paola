@@ -1,0 +1,14 @@
+DIETA GIANCARLO & PAOLA – V1.28
+
+Aggiornamento ricette: tutte le 413 ricette del database hanno ora una preparazione dettagliata e originale, con struttura da scheda culinaria completa.
+
+Le ricette sono state riscritte usando come riferimento la struttura e le tipologie delle ricette italiane dettagliate, anche presenti su GialloZafferano, senza copiare testi.
+
+File da caricare nel ROOT di GitHub:
+- index.html
+- manifest.webmanifest
+- sw.js
+- icon-180.png
+- icon-192.png
+- icon-512.png
+- apple-touch-icon.png
